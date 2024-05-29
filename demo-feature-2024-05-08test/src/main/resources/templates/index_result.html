@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="/images/Logo.png" type="">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css" />
+    <title> LETO Trends </title>
+    <link rel="shortcut icon" type="image/x-icon" href="/images/Logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://ssl.pstatic.net/static.datalab/202405030736/css/datalab.css">
+    <link rel="stylesheet" type="text/css" href="https://ssl.pstatic.net/static.datalab/202405030736/css/graph.css">
+    <link rel="stylesheet" href="index_result.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script th:inline="javascript">
+
+        var myChart1;
+        var myChart2;
+
+        function pageUrl() {
+            var sHref = decodeURI(location.href);
+            return sHref;
+        }
+
+        window.addEventListener('resize', function() {
+            myChart1.resize();
+            myChart2.resize();
+        });
+
+        window.onload = function() {
+            document.getElementById("drawLine").addEventListener('click', function() {
+                drawChart1('line');
+                drawChart2('line');
+            });
+            document.getElementById("drawBar").addEventListener('click', function() {
+                drawChart1('bar');
+                drawChart2('bar');
+            });
+            document.getElementById("scatter").addEventListener('click', function() {
+                drawChart1('scatter');
+                drawChart2('scatter');
+            });
+
+            drawChart1('line');
+            drawChart2('line');
+        };
+
+        function drawChart1(type) {
+            myChart1 = echarts.init(document.getElementById('chart1'));
+
+            var xAxisData = [[${xAxisData}]];
+            let seriesData1 = [[${seriesData1}]];
+            let seriesData2 = [];
+            let seriesData3 = [];
+            let seriesData4 = [];
+            let seriesData5 = [];
+
+            if ([[${query2}]]!="") {
+                seriesData2 = [[${seriesData2}]];
+            }
+
+            if ([[${query3}]]!="") {
+                seriesData3 = [[${seriesData3}]];
+            }
+
+            if ([[${query4}]]!="") {
+                seriesData4 = [[${seriesData4}]];
+            }
+
+            if ([[${query5}]]!="") {
+                seriesData5 = [[${seriesData5}]];
+            }
+
+            let legendData = []; // 범례 데이터를 동적으로 저장할 배열
+
+            if ([[${query1}]] !== "") {
+                legendData.push('[[${query1}]]');
+            }
+            if ([[${query2}]]!="") {
+                legendData.push('[[${query2}]]');
+            }
+            if ([[${query3}]]!="") {
+                legendData.push('[[${query3}]]');
+            }
+            if ([[${query4}]]!="") {
+                legendData.push('[[${query4}]]');
+            }
+            if ([[${query5}]]!="") {
+                legendData.push('[[${query5}]]');
+            }
+
+            let option = {
+                tooltip: {
+                    trigger: 'item',
+                    position: function (point, params, dom, rect, size) {
+                        var x = 150; // x 좌표 조절
+                        var y = 50; // y 좌표 조절
+                        console.log(point[0])
+                        if(point[0]<510){
+                            return [point[0], point[1] - y];
+                        } else if (point[0]>510){
+                            return [point[0]-x, point[1] - y];
+                        }
+                    }
+                },
+                title: {
+                    text: '비교군1'
+                },
+                dataZoom: [
+                    {
+                        type: 'slider',
+                        show: true,
+                        start: 0,
+                        end: 100
+                    },
+                    {
+                        type: 'inside',
+                        start: 0,
+                        end: 100
+                    }
+                ],
+                toolbox: {
+                    feature: {
+                        saveAsImage: { show: true },
+                        dataZoom: { show: true },
+                        restore: { show: true },
+                        magicType: { type: ['line', 'bar', 'stack', 'tiled'] }
+                    }
+                },
+                grid: {
+                    left: '1%',
+                    right: '4%',
+                    bottom: '10%',
+                    top: '10%',
+                    containLabel: true
+                },
+                legend: {
+                    data: legendData,
+                    textStyle: {
+                        color: '#B0B0B0'
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: xAxisData
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: '[[${query1}]]',
+                        data: seriesData1,
+                        type: type,
+                        color: '#4C8DF6'
+                    },
+
+                    {
+                        name: '[[${query2}]]',
+                        data: seriesData2,
+                        type: type,
+                        color: '#E46962'
+                    },
+                    {
+                        name: '[[${query3}]]',
+                        data: seriesData3,
+                        type: type,
+                        color: '#F7CE52'
+                    },
+                    {
+                        name: '[[${query4}]]',
+                        data: seriesData4,
+                        type: type,
+                        color: '#1EA446'
+                    },
+                    {
+                        name: '[[${query5}]]',
+                        data: seriesData5,
+                        type: type,
+                        color: '#886CD5'
+                    }
+                ],
+                label: {
+                    show: false,
+                    position: 'top',
+                }
+            };
+            myChart1.setOption(option);
+        }
+
+        function drawChart2(type) {
+            myChart2 = echarts.init(document.getElementById('chart2'));
+
+            var xAxisData = [[${xAxis2Data}]];
+            let seriesData1 = [[${series2Data1}]];
+            let seriesData2 = [];
+            let seriesData3 = [];
+            let seriesData4 = [];
+            let seriesData5 = [];
+
+            if ([[${query2}]]!="") {
+                seriesData2 = [[${series2Data2}]];
+            }
+
+            if ([[${query3}]]!="") {
+                seriesData3 = [[${series2Data3}]];
+            }
+
+            if ([[${query4}]]!="") {
+                seriesData4 = [[${series2Data4}]];
+            }
+
+            if ([[${query5}]]!="") {
+                seriesData5 = [[${series2Data5}]];
+            }
+
+            let legendData = []; // 범례 데이터를 동적으로 저장할 배열
+
+            if ([[${query1}]] !== "") {
+                legendData.push('[[${query1}]]');
+            }
+            if ([[${query2}]]!="") {
+                legendData.push('[[${query2}]]');
+            }
+            if ([[${query3}]]!="") {
+                legendData.push('[[${query3}]]');
+            }
+            if ([[${query4}]]!="") {
+                legendData.push('[[${query4}]]');
+            }
+            if ([[${query5}]]!="") {
+                legendData.push('[[${query5}]]');
+            }
+
+            let option = {
+                tooltip: {
+                    trigger: 'item',
+                    position: function (point, params, dom, rect, size) {
+                        var x = 150; // x 좌표 조절
+                        var y = 50; // y 좌표 조절
+                        console.log(point[0])
+                        if(point[0]<510){
+                            return [point[0], point[1] - y];
+                        } else if (point[0]>510){
+                            return [point[0]-x, point[1] - y];
+                        }
+                    }
+                },
+                title: {
+                  text: '비교군2'
+                },
+                dataZoom: [
+                    {
+                        type: 'slider',
+                        show: true,
+                        start: 0,
+                        end: 100
+                    },
+                    {
+                        type: 'inside',
+                        start: 0,
+                        end: 100
+                    }
+                ],
+                toolbox: {
+                    feature: {
+                        saveAsImage: { show: true },
+                        dataZoom: { show: true },
+                        restore: { show: true },
+                        magicType: { type: ['line', 'bar', 'stack', 'tiled'] }
+                    }
+                },
+                grid: {
+                    left: '1%',
+                    right: '4%',
+                    bottom: '10%',
+                    top: '10%',
+                    containLabel: true
+                },
+                legend: {
+                    data: legendData,
+                    textStyle: {
+                        color: '#B0B0B0'
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: xAxisData
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: '[[${query1}]]',
+                        data: seriesData1,
+                        type: type,
+                        color: '#4C8DF6'
+                    },
+                    {
+                        name: '[[${query2}]]',
+                        data: seriesData2,
+                        type: type,
+                        color: '#E46962'
+                    },
+                    {
+                        name: '[[${query3}]]',
+                        data: seriesData3,
+                        type: type,
+                        color: '#F7CE52'
+                    },
+                    {
+                        name: '[[${query4}]]',
+                        data: seriesData4,
+                        type: type,
+                        color: '#1EA446'
+                    },
+                    {
+                        name: '[[${query5}]]',
+                        data: seriesData5,
+                        type: type,
+                        color: '#886CD5'
+                    }
+                ],
+                label: {
+                    show: false,
+                    position: 'top',
+                }
+            };
+            myChart2.setOption(option);
+        }
+    </script>
+    <script>
+        window.onscroll = function() {
+            var button = document.getElementById("fixedButton");
+            var scrollTop = window.scrollY || document.documentElement.scrollTop;
+            var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+            var buttonHeight = button.offsetHeight;
+
+            // 버튼을 고정시킬 위치 계산
+            var buttonTopPosition = windowHeight - buttonHeight - 20; // 우측 하단에 여백 20px을 두고 버튼을 배치
+
+            // 현재 스크롤 위치가 버튼을 고정시킬 위치를 넘었을 때 버튼을 고정시킴
+            if (scrollTop > buttonTopPosition) {
+                button.style.position = "fixed";
+                button.style.bottom = "20px"; // 여백 조정
+                button.style.right = "20px"; // 여백 조정
+            } else {
+                button.style.position = "static"; // 스크롤이 버튼을 넘지 않으면 버튼 위치를 원래대로 설정
+            }
+        };
+        function logout() {
+            alert('로그아웃되었습니다.');
+            window.location.href = '/member/logout';
+        }
+    </script>
+    <script>
+        function toggleAllCheckboxes(group, source) {
+            const checkboxes = document.querySelectorAll(`input[name=${group}]`);
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false; // 모든 체크박스를 해제
+            });
+            source.checked = true; // 전체 체크박스만 체크
+        }
+
+        function updateAllCheckbox(group, allCheckboxId) {
+            const checkboxes = document.querySelectorAll(`input[name=${group}]`);
+            const allCheckbox = document.getElementById(allCheckboxId);
+            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+            if (!anyChecked) {
+                allCheckbox.checked = true; // 아무것도 체크되지 않는 경우 전체 체크
+            } else {
+                allCheckbox.checked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+            }
+        }
+
+        function validateCheckboxSelection() {
+            // 첫 번째 그룹 'age'에 대한 검증
+            const ageCheckboxes = document.querySelectorAll('input[name="age"]');
+            const anyAgeChecked = Array.from(ageCheckboxes).some(checkbox => checkbox.checked);
+
+            // 두 번째 그룹 'age2'에 대한 검증
+            const age2Checkboxes = document.querySelectorAll('input[name="age2"]');
+            const anyAge2Checked = Array.from(age2Checkboxes).some(checkbox => checkbox.checked);
+
+            // 두 그룹 중 하나라도 선택되지 않은 경우 경고
+            if(!anyAgeChecked){
+                alert("비교군 1에서 최소한 하나의 연령을 선택해주세요.")
+                return false;
+            }
+
+            if(!anyAge2Checked){
+                alert("비교군 2에서 최소한 하나의 연령을 선택해주세요.")
+                return false;
+            }
+            return true;
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const searchButton = document.getElementById('search_button');
+            searchButton.addEventListener('click', (event) => {
+                if (!validateCheckboxSelection()) {
+                    event.preventDefault(); // 폼 제출 방지
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            for (let i = 1; i <= 4; i++) {
+                const yearSelect = document.getElementById(`selectYear${i}`);
+                const monthSelect = document.getElementById(`selectMonth${i}`);
+                const daySelect = document.getElementById(`selectDay${i}`);
+
+                const today = new Date();
+                const currentYear = today.getFullYear();
+                const currentMonth = today.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
+                const currentDate = today.getDate();
+
+                function updateMonths(yearSelect, monthSelect) {
+                    const selectedYear = parseInt(yearSelect.value);
+                    // 기존의 월 옵션을 모두 제거합니다.
+                    monthSelect.innerHTML = '';
+
+                    for (let month = 1; month <= 12; month++) {
+                        // 현재 년도보다 작거나 같은 경우에만 월을 추가합니다.
+                        if (selectedYear < currentYear || (selectedYear === currentYear && month <= currentMonth)) {
+                            const option = document.createElement('option');
+                            option.value = month.toString().padStart(2, '0');
+                            option.textContent = month;
+                            monthSelect.appendChild(option);
+                        }
+                    }
+
+                    // 월 셀렉트 박스를 현재 월로 설정합니다.
+                    monthSelect.value = currentMonth.toString().padStart(2, '0');
+                }
+
+                function updateDays(yearSelect, monthSelect, daySelect, groupNumber) {
+                    const year = parseInt(yearSelect.value);
+                    const month = parseInt(monthSelect.value);
+                    let daysInMonth;
+
+                    const selectedDay = parseInt(daySelect.value);
+
+                    if (month === 2 && ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0)) {
+                        daysInMonth = 29;
+                    } else {
+                        daysInMonth = new Date(year, month, 0).getDate();
+                    }
+
+                    daySelect.innerHTML = '';
+
+                    for (let day = 1; day <= daysInMonth; day++) {
+                        const option = document.createElement('option');
+                        option.value = day.toString().padStart(2, '0');
+                        option.textContent = day;
+
+                        const selectedDate = new Date(year, month - 1, day);
+
+                        if (selectedDate <= today) {
+                            if (groupNumber === 1 || groupNumber === 3) {
+                                if (day === currentDate && (year === currentYear - 2 || year === currentYear - 1) && month === currentMonth) {
+                                    option.selected = true;
+                                }
+                            } else {
+                                if (day === currentDate && year === currentYear && month === currentMonth) {
+                                    option.selected = true;
+                                }
+                            }
+                            daySelect.appendChild(option);
+                        }
+                    }
+
+                    if (selectedDay && selectedDay <= daysInMonth) {
+                        daySelect.value = selectedDay.toString().padStart(2, '0');
+                    }
+
+                    const selectedDate = new Date(year, month - 1, parseInt(daySelect.value));
+                    if (selectedDate > today) {
+                        alert('미래 날짜는 선택할 수 없습니다.');
+                        yearSelect.value = currentYear.toString();
+                        monthSelect.value = currentMonth.toString().padStart(2, '0');
+                        daySelect.value = currentDate.toString().padStart(2, '0');
+                    }
+                }
+
+                // 연도를 조정합니다. yearSelect1은 -2, yearSelect3은 -1 합니다.
+                if (i === 1) {
+                    yearSelect.value = (currentYear - 2).toString();
+                } else if (i === 3) {
+                    yearSelect.value = (currentYear - 1).toString();
+                } else {
+                    yearSelect.value = currentYear.toString();
+                }
+
+                // 월 셀렉트 박스를 업데이트합니다.
+                updateMonths(yearSelect, monthSelect);
+
+                // 일 셀렉트 박스를 업데이트합니다.
+                updateDays(yearSelect, monthSelect, daySelect, i);
+
+                // 셀렉트 박스 값 변경 시 업데이트합니다.
+                yearSelect.addEventListener('change', () => {
+                    updateMonths(yearSelect, monthSelect);
+                    updateDays(yearSelect, monthSelect, daySelect, i);
+                });
+                monthSelect.addEventListener('change', () => updateDays(yearSelect, monthSelect, daySelect, i));
+                daySelect.addEventListener('change', () => updateDays(yearSelect, monthSelect, daySelect, i));
+            }
+        });
+    </script>
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css" />
+
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <!--owl slider stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+    <!-- font awesome style -->
+    <link href="/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="/css/responsive.css" rel="stylesheet" />
+
+</head>
+
+<body class="sub_page">
+
+<div class="hero_area">
+    <div th:insert="~{/fragments/topFragment :: topFragment}"></div>
+</div>
+
+<!-- service section -->
+<section class="service_section layout_padding">
+    <div class="grid-container">
+        <form action="index_result" method="get" id="myForm">
+            <div class="item1">
+                <br><br><br>
+                <h1>
+                    차트 <span>비교분석</span>
+                </h1>
+                <input type="text" placeholder="검색어1(필수)" name="query1" required/>
+
+                <input type="hidden" id="hidden1" placeholder="검색어2" name="query2"/>
+
+                <input type="hidden" id="hidden2" placeholder="검색어3" name="query3"/>
+
+                <input type="hidden" id="hidden3" placeholder="검색어4" name="query4"/>
+
+                <input type="hidden" id="hidden4" placeholder="검색어5" name="query5"/>
+
+                <button class="custom-btn btn-7" type="button" id="addSearchBox">검색어 추가</button>
+                <script>
+                    document.getElementById('addSearchBox').addEventListener('click', function() {
+                        var form = document.getElementById('myForm');
+                        var hiddenInputs = form.querySelectorAll('input[type="hidden"]');
+                        for (var i = 0; i < hiddenInputs.length; i++) {
+                            if (hiddenInputs[i].type === 'hidden') {
+                                hiddenInputs[i].type = 'text';
+                                break; // 첫 번째 hidden 타입의 input 태그만 변경합니다.
+                            }
+                        }
+                    });
+                </script>
+            </div>
+            <div class="item2">
+                <br>
+                <strong>비교군1 : </strong>
+                <strong class="title">기간</strong>
+                <label for="selectYear1"></label><select name="year" id="selectYear1">
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+            </select>
+                <label for="selectMonth1"></label><select name="month" id="selectMonth1">
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+            </select>
+                <label for="selectDay1"></label>
+                <select name="day" id="selectDay1">
+                    <!-- 일 옵션은 JavaScript로 동적으로 채워집니다 -->
+                </select>
+                <small> 에서</small>
+                <label for="selectYear2"></label><select name="year2" id="selectYear2">
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+            </select>
+                <label for="selectMonth2"></label><select name="month2" id="selectMonth2">
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+            </select>
+                <label for="selectDay2"></label>
+                <select name="day2" id="selectDay2">
+                    <!-- 일 옵션은 JavaScript로 동적으로 채워집니다 -->
+                </select><small> 까지</small>
+                <a>&nbsp</a><a>&nbsp</a><a>&nbsp</a><a>&nbsp</a>
+                <strong class="title">단위</strong>
+                <label for="selectDayType"></label><select name="select_day_week_month" id="selectDayType">
+                <option selected value="date">일간</option>
+                <option value="week">주간</option>
+                <option value="month">월간</option>
+            </select>
+                <a>&nbsp</a><a>&nbsp</a><a>&nbsp</a><a>&nbsp</a>
+                <strong class="title">범위</strong>
+                <span class="select_box v1">
+            <select name="device" id="select_box_mopc">
+                <option selected value="">전체</option>
+                <option value="mo">모바일</option>
+                <option value="pc">PC</option>
+            </select>
+            </span>
+                <a>&nbsp</a><a>&nbsp</a><a>&nbsp</a><a>&nbsp</a>
+                <strong class="title">성별</strong>
+                <select name="gender" id="select_box_gender">
+                    <option selected value="">전체</option>
+                    <option value="f">여성</option>
+                    <option value="m">남성</option>
+                </select>
+                <div class="set_col set_target_chk _checkbox_ui">
+                    <div class="set_chk _item_check_div _age_div">
+                        <a>&nbsp</a>
+                        <strong class="title v2">연령선택</strong>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age_all" class="chk" name="age" value="" checked onclick="toggleAllCheckboxes('age', this)">
+                        <label class="lbl " for="item_age_all">전체&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age_1" class="chk" name="age" value="1" onclick="updateAllCheckbox('age', 'item_age_all')">
+                        <label class="lbl " for="item_age_1">~12&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age_2" class="chk" name="age" value="2" onclick="updateAllCheckbox('age', 'item_age_all')">
+                        <label class="lbl " for="item_age_2">13~18&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age_3" class="chk" name="age" value="3" onclick="updateAllCheckbox('age', 'item_age_all')">
+                        <label class="lbl " for="item_age_3">19~24&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age_4" class="chk" name="age" value="4" onclick="updateAllCheckbox('age', 'item_age_all')">
+                        <label class="lbl " for="item_age_4">25~29&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age_5" class="chk" name="age" value="5" onclick="updateAllCheckbox('age', 'item_age_all')">
+                        <label class="lbl " for="item_age_5">30~34&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age_6" class="chk" name="age" value="6" onclick="updateAllCheckbox('age', 'item_age_all')">
+                        <label class="lbl " for="item_age_6">35~39&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age_7" class="chk" name="age" value="7" onclick="updateAllCheckbox('age', 'item_age_all')">
+                        <label class="lbl " for="item_age_7">40~44&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age_8" class="chk" name="age" value="8" onclick="updateAllCheckbox('age', 'item_age_all')">
+                        <label class="lbl " for="item_age_8">45~49&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age_9" class="chk" name="age" value="9" onclick="updateAllCheckbox('age', 'item_age_all')">
+                        <label class="lbl " for="item_age_9">50~54&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age_10" class="chk" name="age" value="10" onclick="updateAllCheckbox('age', 'item_age_all')">
+                        <label class="lbl " for="item_age_10">55~59&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age_11" class="chk" name="age" value="11" onclick="updateAllCheckbox('age', 'item_age_all')">
+                        <label class="lbl " for="item_age_11">60~</label>
+                    </span>
+                    </div>
+                </div>
+                <hr class="hr-1">
+                <strong>비교군2 : </strong>
+                <strong class="title">기간</strong>
+                <label for="selectYear1"></label><select name="year3" id="selectYear3">
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+            </select>
+                <label for="selectMonth1"></label><select name="month3" id="selectMonth3">
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+            </select>
+                <label for="selectDay1"></label><select name="day3" id="selectDay3">
+                <!-- 일 옵션은 JavaScript로 동적으로 채워집니다 -->
+            </select><small> 에서</small>
+                <label for="selectYear2"></label><select name="year4" id="selectYear4">
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+            </select>
+                <label for="selectMonth2"></label><select name="month4" id="selectMonth4">
+                <option selected>월</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+            </select>
+                <label for="selectDay2"></label><select name="day4" id="selectDay4">
+                <!-- 일 옵션은 JavaScript로 동적으로 채워집니다 -->
+            </select><small> 까지</small>
+                <a>&nbsp</a><a>&nbsp</a><a>&nbsp</a><a>&nbsp</a>
+                <strong class="title">단위</strong>
+                <label for="selectDayType"></label><select name="select_day_week_month2" id="selectDayType2">
+                <option selected value="date">일간</option>
+                <option value="week">주간</option>
+                <option value="month">월간</option>
+            </select>
+                <a>&nbsp</a><a>&nbsp</a><a>&nbsp</a><a>&nbsp</a>
+                <strong class="title">범위</strong>
+                <span class="select_box v1">
+            <select name="device2" id="select_box_mopc2">
+                <option selected value="">전체</option>
+                <option value="mo">모바일</option>
+                <option value="pc">PC</option>
+            </select>
+            </span>
+                <a>&nbsp</a><a>&nbsp</a><a>&nbsp</a><a>&nbsp</a>
+                <strong class="title">성별</strong>
+                <select name="gender2" id="select_box_gender2">
+                    <option selected value="">전체</option>
+                    <option value="f">여성</option>
+                    <option value="m">남성</option>
+                </select>
+                <div class="set_col set_target_chk _checkbox_ui">
+                    <div class="set_chk _item_check_div _age_div">
+                        <a>&nbsp</a>
+                        <strong class="title v2">연령선택</strong>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age2_all" class="chk" name="age2" value="" checked onclick="toggleAllCheckboxes('age2', this)">
+                        <label class="lbl " for="item_age2_all">전체&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age2_1" class="chk" name="age2" value="1" onclick="updateAllCheckbox('age2', 'item_age2_all')">
+                        <label class="lbl " for="item_age2_1">~12&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age2_2" class="chk" name="age2" value="2" onclick="updateAllCheckbox('age2', 'item_age2_all')">
+                        <label class="lbl " for="item_age2_2">13~18&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age2_3" class="chk" name="age2" value="3" onclick="updateAllCheckbox('age2', 'item_age2_all')">
+                        <label class="lbl " for="item_age2_3">19~24&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age2_4" class="chk" name="age2" value="4" onclick="updateAllCheckbox('age2', 'item_age2_all')">
+                        <label class="lbl " for="item_age2_4">25~29&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age2_5" class="chk" name="age2" value="5" onclick="updateAllCheckbox('age2', 'item_age2_all')">
+                        <label class="lbl " for="item_age2_5">30~34&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age2_6" class="chk" name="age2" value="6" onclick="updateAllCheckbox('age2', 'item_age2_all')">
+                        <label class="lbl " for="item_age2_6">35~39&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age2_7" class="chk" name="age2" value="7" onclick="updateAllCheckbox('age2', 'item_age2_all')">
+                        <label class="lbl " for="item_age2_7">40~44&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age2_8" class="chk" name="age2" value="8" onclick="updateAllCheckbox('age2', 'item_age2_all')">
+                        <label class="lbl " for="item_age2_8">45~49&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age2_9" class="chk" name="age2" value="9" onclick="updateAllCheckbox('age2', 'item_age2_all')">
+                        <label class="lbl " for="item_age2_9">50~54&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age2_10" class="chk" name="age2" value="10" onclick="updateAllCheckbox('age2', 'item_age2_all')">
+                        <label class="lbl " for="item_age2_10">55~59&nbsp</label>
+                    </span>
+                        <span class="select_chk v1">
+                        <input type="checkbox" id="item_age2_11" class="chk" name="age2" value="11" onclick="updateAllCheckbox('age2', 'item_age2_all')">
+                        <label class="lbl " for="item_age2_11">60~</label>
+                    </span>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <button class="custom-btn btn-7 item4" id="search_button" type="submit">LETO 검색 데이터 조회</button>
+        </form>
+        <div class="item3">
+            <form action="/favorite_url" onsubmit="return clickAlert()" method="get">
+                <div>
+                    <button class="custom-btn btn-7" id="drawLine" type="button" value="line">Line Chart</button>
+                    <button class="custom-btn btn-7" id="drawBar" type="button" value="bar">Bar Chart</button>
+                    <button class="custom-btn btn-7" id="scatter"  type="button" value="scatter">Scatter Chart</button>
+                    <input type="hidden" name="url" id="urlInput" value="">
+                    <script th:inline="javascript">
+                        if (pageUrl()!="http://localhost:8080/index_result"&&pageUrl()!=[[${url1}]]&&pageUrl()!=[[${url2}]]&&pageUrl()!=[[${url3}]]&&pageUrl()!=[[${url4}]]) {
+                            document.getElementById('urlInput').value = pageUrl();
+                        }
+                        function clickAlert() {
+                            var inputValue = document.getElementById('urlInput').value;
+                            if (pageUrl()==="http://localhost:8080/index_result") {
+                                alert("검색후 즐겨찾기하실수 있습니다.");
+                                return false;
+                            } else if (pageUrl()===[[${url1}]]||pageUrl()===[[${url2}]]||pageUrl()===[[${url3}]]||pageUrl()===[[${url4}]]||pageUrl()===[[${url5}]]) {
+                                alert("동일한 검색조건은 즐겨찾기하실 수없습니다.")
+                                return false;
+                            }else if ([[${isTrueAll}]]) {
+                                alert("즐겨찾기는 5개까지 추가가능합니다.")
+                                return false;
+                            }
+                        }
+                    </script>
+                    <button class="custom-btn btn-7" type="button" onclick="window.location.href='/index_login_success'">홈으로</button>
+                    <button class="custom-btn btn-7" type="submit">즐겨찾기 추가</button>
+                    <button class="custom-btn btn-7" type="button" onclick="window.location.href='/favorite_url'">즐겨찾기 목록</button>
+                </div>
+            </form>
+        </div>
+        <div class="item5">
+            <div class="card card-4" id="chart1"></div>
+            &nbsp&nbsp&nbsp&nbsp
+            <div class="card card-4" id="chart2"></div>
+        </div>
+    </div>
+    <button id="dark-mode-toggle" class="fixed-button">
+        <i id="dark-mode-icon" class="fas fa-toggle-off"></i> Dark Mode
+    </button>
+    <script>
+        const darkModeKey = 'darkMode'; // 로컬 스토리지에 저장되는 키의 이름을 'darkMode'로 통일
+
+        document.getElementById("dark-mode-toggle").addEventListener("click", function() {
+            var icon = document.getElementById("dark-mode-icon");
+            var body = document.body;
+
+            if (body.classList.contains("dark-mode")) {
+                body.classList.remove("dark-mode");
+                body.setAttribute('data-theme', 'light');
+                icon.classList.remove("fa-toggle-on");
+                icon.classList.add("fa-toggle-off");
+                localStorage.setItem(darkModeKey, 'false');
+            } else {
+                body.classList.add("dark-mode");
+                body.setAttribute('data-theme', 'dark');
+                icon.classList.remove("fa-toggle-off");
+                icon.classList.add("fa-toggle-on");
+                localStorage.setItem(darkModeKey, 'true');
+            }
+        });
+
+        function loadDarkMode() {
+            var isDarkMode = localStorage.getItem(darkModeKey) === 'true';
+            var icon = document.getElementById("dark-mode-icon");
+            var body = document.body;
+            var logo = document.getElementById("logo");
+
+            if (isDarkMode) {
+                body.classList.add("dark-mode");
+                body.setAttribute('data-theme', 'dark');
+                icon.classList.remove("fa-toggle-off");
+                icon.classList.add("fa-toggle-on");
+            } else {
+                body.classList.remove("dark-mode");
+                body.setAttribute('data-theme', 'light');
+                icon.classList.remove("fa-toggle-on");
+                icon.classList.add("fa-toggle-off");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadDarkMode);
+    </script>
+</section>
+<br><br><br><br><br>
+<section class="info_section layout_padding2">
+    <div class="container_1">
+        <div class="row">
+            <div class="col-md-6 col-lg-3 info_col">
+                <div class="info_contact">
+                    <h4>
+                        Address
+                    </h4>
+                    <div class="contact_link_box">
+                        <a href="">
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            <span>
+                  Call +82 01023186310
+                </span>
+                        </a>
+                        <a href="">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            <span>
+                  qjawns314@naver.com
+                </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="info_social">
+                    <a href="">
+                        <i class="fa fa-facebook" aria-hidden="true"></i>
+                    </a>
+                    <a href="">
+                        <i class="fa fa-twitter" aria-hidden="true"></i>
+                    </a>
+                    <a href="">
+                        <i class="fa fa-linkedin" aria-hidden="true"></i>
+                    </a>
+                    <a href="">
+                        <i class="fa fa-instagram" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 info_col">
+                <div class="info_detail">
+                    <h4>
+                        Info
+                    </h4>
+                    <p>
+                        Our search trend website identifies real-time user interests and provides the latest trends. Quickly see what topics and search terms are trending worldwide.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-2 mx-auto info_col">
+                <div class="info_link_box">
+                    <h4>
+                        Links
+                    </h4>
+                    <div class="info_links">
+                        <a class="active" href="/">
+                            Home
+                        </a>
+                        <a class="" href="about">
+                            About
+                        </a>
+                        <a class="" href="service">
+                            Analysis
+                        </a>
+                        <a class="" href="why">
+                            Why Us
+                        </a>
+                        <a class="" href="team">
+                            Team
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQery -->
+<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<!-- popper js -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+</script>
+<!-- bootstrap js -->
+<script type="text/javascript" src="/js/bootstrap.js"></script>
+<!-- owl slider -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+</script>
+<!-- custom js -->
+<script type="text/javascript" src="/js/custom.js"></script>
+<!-- Google Map -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
+</script>
+<!-- End Google Map -->
+
+</body>
+
+</html>

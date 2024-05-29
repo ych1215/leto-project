@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<header class="header_section" th:fragment="topFragment">
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container ">
+            <a class="navbar-brand" href="/index_login_success">
+            <span>
+              LETO Trends
+            </span>
+            </a>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav  ">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/index_login_success">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about_success"> About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="service_success">Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="manual_success">Manual</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="team_success">Team</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"> <i class="fa fa-user" aria-hidden="true" th:text="${username}"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/member/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+</body>
+</html>

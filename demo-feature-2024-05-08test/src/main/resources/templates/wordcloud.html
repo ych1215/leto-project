@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="/images/Logo.png" type="">
+
+    <title> LETO Trends </title>
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css" />
+
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <!--owl slider stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+    <!-- font awesome style -->
+    <link href="/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="/css/responsive.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!--    d3 -->
+    <!--
+        <script src="https://d3js.org/d3.v3.min.js"></script>
+        <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js" type="text/JavaScript"></script>
+    -->
+    <!--    JQCloud -->
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqcloud/1.0.3/jqcloud.min.js" integrity="sha512-gZUG2nobmGEaF3G67OVAmD0lQGbkzN5t9tuiOndqzVNiWBLkCo4o6UBkBLkvKfTPWlVBJPI8dvkLJTwcJbKwvw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+    <!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqcloud/1.0.3/jqcloud.css" integrity="sha512-WrGUNi0fHDkVluVxLEbsjpuzBTCiUyTJAFi20txqcKH4V8uEOaRQ+G8LnNMTuvmauaY5J05DzNayZ6RmUMy9FA==" crossorigin="anonymous" referrerpolicy="no-referrer" />-->
+
+    <!--    anyChart -->
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-tag-cloud.min.js"></script>
+
+
+    <style>
+        #container {
+            width: 800px;
+            height: 800px;
+            margin: 0;
+            padding: 0;
+            position: center;
+        }
+
+        #img {
+            margin-top: 50px;
+        }
+
+        .w-btn-outline {
+            /*width: 100px;*/
+            /*height: 30px;*/
+            position: relative;
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-family: "paybooc-Light", sans-serif;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.25s;
+        }
+
+        .w-btn-red-outline {
+            border: 3px solid #ff5f2e;
+            color: #6e6e6e;
+        }
+
+        .w-btn-red-outline:hover {
+            background-color: #ff5f2e;
+            color: #e1eef6;
+            cursor: pointer;
+        }
+
+        #txt {
+            width: 200px;
+            height: 32px;
+            font-size: 15px;
+            border: 0;
+            border-radius: 15px;
+            outline: none;
+            padding-left: 10px;
+            background-color: rgb(233, 233, 233);
+        }
+
+
+    </style>
+
+    <script>
+        // 검색 버튼을 총 몇번 클릭했는지 확인하기 위한 변수
+        // 1번 이상 검색 시 true 로 변경
+        var flag = false;
+
+        $(function () {
+            // 사이트 첫 로딩 후 container 감추기
+            $("#container").hide();
+
+            // 버튼을 클릭하면 search 함수 실행
+            $("#search").on("click", search);
+
+            // 엔터 누르면 search 함수 실행
+            $(document).on("keydown", function(e){
+                if(e.keyCode == 13){
+                    search();
+                }
+            })
+
+        })
+
+        function search() {
+
+            // 첫번째 검색시에는 flag 가 false 이나 1번 클릭한 후에는 flag 가 true 로 변경 후 아래 코드 실행
+            if (flag) {
+                // container 에 남아잇는 data 를 전부 지우고 감추기
+                $("#container")
+                    .empty()
+                    .hide();
+                console.log(flag)
+            }
+
+            flag = true;
+
+            console.log(flag);
+            // 검색어가 없으면 얼럿창
+            if ($("#txt").val() == "") {
+                alert("검색어를 정확히 넣어주세요")
+                return;
+            }
+
+            // serarch 버튼 누를 시 img 를 loading 로 변경
+            $("#img")
+                .attr("src", "images/wordcloudImg/loading.gif")
+                .animate({
+                    width: 300,
+                    height: 300,
+                })
+                .css({
+                    margin: 250
+                })
+
+            // text 태그에 넣은 값을 가져와서 word 에 json 형태로 저장
+            var word = {
+                word: $("#txt").val()
+            }
+
+            // ajax 방식으로 서버에 던짐
+            $.ajax({
+                url: "/wordCloud", // 보내는 url
+                type: "get", // 보내는 방식 post
+                data: word, // 보내는 데이터 word 라는 json 형태
+                dataType: 'json', <!--서버로부터 받는 값의 데이터 형식-->
+                contentType: "application/json;charset=utf-8", // 서버로부터 받는 값의 콘텐츠 형태(인코딩형태?)
+
+                // ajax 로 성공적으로 데이터를 받는 경우 해당 데이터는 success 에 있는 function 을 타게 됨
+                // 이때 매개변수로 들어오는 값이 곧 서버에서 받은 값!!
+                success: function (result) {
+                    // 서버에서 값을 받았음으로 loading 이미지는 필요없기 때문에 감추기!
+                    $("#img").hide();
+
+                    // 값을 출력할 container 모습 보이게 하기
+                    $("#container").show();
+
+                    // 서버에서 받은 result 라는 데이터를 String 형태로 만든후
+                    // 다시 json 형태로 파싱하여 data 라는 변수에 저장한다.
+                    var data = JSON.parse(JSON.stringify(result));
+                    // console.log(data);
+
+                    // 1. JQCloud 사용 => text : weight
+                    // $("#wordcloud").jQCloud(data, {
+                    //     width : 800,
+                    //     height : 600,
+                    //     shape : 'rectangular',
+                    //     autoResize: true,
+                    //     classPattern: null,
+                    //     colors: ["#800026", "#bd0026", "#e31a1c", "#fc4e2a", "#fd8d3c", "#feb24c", "#fed976", "#ffeda0", "#ffffcc"],
+                    //     fontSize: {
+                    //         from: 0.1,
+                    //         to: 0.02
+                    //     }
+                    // });
+
+                    // 2. anyChart 사용 => t : value
+                    var chart = anychart.tagCloud(data);
+
+                    chart.title("My Word Cloud");
+                    chart.container("container");
+
+                    chart.hovered().fill("#8711c3");
+                    chart.mode("spiral");
+
+                    // 글자 돌아가는거 막게
+                    chart.angles([0]);
+
+                    chart.draw();
+
+
+                },
+                // 에러가 발생하면 - 대체적으로 백엔드에서 null 값이 return 되는 경우 - 경고창
+                error: function () {
+                    alert("정상적이지 않은 요청입니다. 다시 시도해주세요")
+                    location.reload();
+                }
+
+
+
+            })
+        }
+    </script>
+</head>
+
+<body class="sub_page">
+
+<div class="hero_area">
+
+    <div class="hero_bg_box">
+        <div class="bg_img_box">
+            <img src="/images/hero-bg.png" alt="">
+        </div>
+    </div>
+
+    <div th:insert="~{/fragments/topFragment :: topFragment}"></div>
+</div>
+
+<center>
+    <div id="div">
+        <img src="images/wordcloudImg/search.jpg" id="img">
+        <div id="container" align="center"></div>
+    </div>
+
+    <input type="text" name="" id="txt">
+    <!--<input type="button" value="검색" id="search">-->
+    <input type="button" class="w-btn-outline w-btn-red-outline" id="search" value="검색">
+</center>
+
+<div th:insert="~{/fragments/bottomFragment :: bottomFragment}"></div>
+
+<!-- jQery -->
+<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<!-- popper js -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+</script>
+<!-- bootstrap js -->
+<script type="text/javascript" src="/js/bootstrap.js"></script>
+<!-- owl slider -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+</script>
+<!-- custom js -->
+<script type="text/javascript" src="/js/custom.js"></script>
+<!-- Google Map -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
+</script>
+<!-- End Google Map -->
+
+</body>
+
+</html>
