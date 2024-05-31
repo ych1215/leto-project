@@ -221,109 +221,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<String> apiResponseX(String query, String year, String month1, String day1, String year2, String month2, String day2, String timeunit, String coverage, String gender, String[] age) {
-        String clientId = "Dt79jDvgaAHmvElS4P3X"; // 애플리케이션 클라이언트 아이디
-        String clientSecret = "vuU44chWP3"; // 애플리케이션 클라이언트 시크릿
-
-        String apiUrl = "https://openapi.naver.com/v1/datalab/search";
-
-        Map<String, String> requestHeaders = new HashMap<>();
-        requestHeaders.put("X-Naver-Client-Id", clientId);
-        requestHeaders.put("X-Naver-Client-Secret", clientSecret);
-        requestHeaders.put("Content-Type", "application/json");
-
-        String agesString = "";
-        if (age != null) {
-            agesString = "[" + Arrays.stream(age)
-                    .map(a -> "\"" + a + "\"")
-                    .collect(Collectors.joining(",")) + "]";
-        }
-
-        String requestBody = "{\"startDate\":\"" + year + "-" + month1 + "-" + day1 + "\"," +
-                "\"endDate\":\"" + year2 + "-" + month2 + "-" + day2 + "\"," +
-                "\"timeUnit\":\"" +  timeunit + "\"," +
-                "\"keywordGroups\":" + (query.isEmpty() ? "[]" : "[{\"groupName\":\"" + query + "\"," + "\"keywords\":[\"" + query + "\"]}]") + "," +
-                "\"device\":\"" + coverage + "\"," +
-                "\"ages\":" + agesString + "," +
-                "\"gender\":\"" + gender + "\"}";
-
-        String responseBody = post(apiUrl, requestHeaders, requestBody);
-
-        List<String> xAxisData = new ArrayList<>();
-        try {
-            JSONObject jsonObject = new JSONObject(responseBody);
-            if (jsonObject.has("results")) {
-                JSONArray resultsArray = jsonObject.getJSONArray("results");
-                for (int i = 0; i < resultsArray.length(); i++) {
-                    JSONObject resultObject = resultsArray.getJSONObject(i);
-                    JSONArray dataArray = resultObject.getJSONArray("data");
-                    for (int j = 0; j < dataArray.length(); j++) {
-                        JSONObject dataObject = dataArray.getJSONObject(j);
-                        String period = dataObject.getString("period");
-                        xAxisData.add(period);
-                    }
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return xAxisData;
-    }
-
-    @Override
-    public List<String> apiResponseY(String query, String year, String month1, String day1, String year2, String month2, String day2, String timeunit, String coverage, String gender, String[] age) {
-        String clientId = "Dt79jDvgaAHmvElS4P3X"; // 애플리케이션 클라이언트 아이디
-        String clientSecret = "vuU44chWP3"; // 애플리케이션 클라이언트 시크릿
-
-        String apiUrl = "https://openapi.naver.com/v1/datalab/search";
-
-        Map<String, String> requestHeaders = new HashMap<>();
-        requestHeaders.put("X-Naver-Client-Id", clientId);
-        requestHeaders.put("X-Naver-Client-Secret", clientSecret);
-        requestHeaders.put("Content-Type", "application/json");
-
-        String agesString = "";
-        if (age != null) {
-            agesString = "[" + Arrays.stream(age)
-                    .map(a -> "\"" + a + "\"")
-                    .collect(Collectors.joining(",")) + "]";
-        }
-
-        String requestBody = "{\"startDate\":\"" + year + "-" + month1 + "-" + day1 + "\"," +
-                "\"endDate\":\"" + year2 + "-" + month2 + "-" + day2 + "\"," +
-                "\"timeUnit\":\"" +  timeunit + "\"," +
-                "\"keywordGroups\":" + (query.isEmpty() ? "[]" : "[{\"groupName\":\"" + query + "\"," + "\"keywords\":[\"" + query + "\"]}]") + "," +
-                "\"device\":\"" + coverage + "\"," +
-                "\"ages\":" + agesString + "," +
-                "\"gender\":\"" + gender + "\"}";
-
-        String responseBody = post(apiUrl, requestHeaders, requestBody);
-
-        List<String> seriesData = new ArrayList<>();
-        try {
-            JSONObject jsonObject = new JSONObject(responseBody);
-            if (jsonObject.has("results")) {
-                JSONArray resultsArray = jsonObject.getJSONArray("results");
-                for (int i = 0; i < resultsArray.length(); i++) {
-                    JSONObject resultObject = resultsArray.getJSONObject(i);
-                    JSONArray dataArray = resultObject.getJSONArray("data");
-                    for (int j = 0; j < dataArray.length(); j++) {
-                        JSONObject dataObject = dataArray.getJSONObject(j);
-                        String ratio = dataObject.getString("ratio");
-                        seriesData.add(ratio);
-                    }
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return seriesData;
-    }
-
-    @Override
-    public Map<String, List<String>> calendarApiResponseX(String query1, String query2, String query3, String query4, String query5, String year, String month1, String day1, String year2, String month2, String day2, String timeunit, String coverage, String gender, String[] age) throws JSONException {
+    public String NaverApiResponse(String query1, String query2, String query3, String query4, String query5, String year, String month1, String day1, String year2, String month2, String day2, String timeunit, String coverage, String gender, String[] age) throws JSONException {
         String clientId = "MUAayGwsDMWNiVmux424"; // 애플리케이션 클라이언트 아이디
         String clientSecret = "ahi_7KupeV"; // 애플리케이션 클라이언트 시크릿
 
@@ -355,88 +253,37 @@ public class MemberServiceImpl implements MemberService {
 
         String responseBody = post(apiUrl, requestHeaders, requestBody);
 
-        JSONObject jsonObject = new JSONObject(responseBody);
+        return responseBody;
+    }
+
+    @Override
+    public ResultMaps parseJson(String jsonString) throws JSONException {
+        JSONObject jsonObject = new JSONObject(jsonString);
         JSONArray resultsArray = jsonObject.getJSONArray("results");
 
-        // Create a map to hold periods and ratios for each title
         Map<String, List<String>> periodsMap = new HashMap<>();
         Map<String, List<Double>> ratiosMap = new HashMap<>();
 
-        // Iterate over the results array
         for (int i = 0; i < resultsArray.length(); i++) {
             JSONObject result = resultsArray.getJSONObject(i);
             String title = result.getString("title");
             JSONArray dataArray = result.getJSONArray("data");
 
-            // Initialize lists for periods and ratios
             List<String> periods = new ArrayList<>();
             List<Double> ratios = new ArrayList<>();
 
-            // Iterate over the data array
             for (int j = 0; j < dataArray.length(); j++) {
                 JSONObject dataPoint = dataArray.getJSONObject(j);
                 periods.add(dataPoint.getString("period"));
                 ratios.add(dataPoint.getDouble("ratio"));
             }
 
-            // Put the lists into the map
             periodsMap.put(title, periods);
             ratiosMap.put(title, ratios);
         }
 
-        return periodsMap;
+        return new ResultMaps(periodsMap, ratiosMap);
     }
-
-    @Override
-    public List<String> apiShoppingResponseX(String title, String param, String year, String month1, String day1, String year2, String month2, String day2, String timeunit, String coverage, String gender, String[] age) {
-        String clientId = "sXJincUWRjt6L4aPpCOO"; // 애플리케이션 클라이언트 아이디
-        String clientSecret = "eSaJMDUTQs"; // 애플리케이션 클라이언트 시크릿
-
-        String apiUrl = "https://openapi.naver.com/v1/datalab/shopping/categories";
-
-        Map<String, String> requestHeaders = new HashMap<>();
-        requestHeaders.put("X-Naver-Client-Id", clientId);
-        requestHeaders.put("X-Naver-Client-Secret", clientSecret);
-        requestHeaders.put("Content-Type", "application/json");
-
-        String requestBody = "{\"startDate\":\"" + year + "-" + month1 + "-" + day1 + "\"," +
-                "\"endDate\":\"" + year2 + "-" + month2 + "-" + day2 + "\"," +
-                "\"timeUnit\":\"" + timeunit + "\"," +
-                "\"category\":[{\"name\":\"" + title + "\",\"param\":[\"" + param + "\"]}," +
-                "\"device\":\"" + coverage + "\"," +
-                "\"ages\":[\"" + age + "\"]," +
-                "\"gender\":\"" + gender + "\"}";
-//        "\"keywordGroups\":" + (query.isEmpty() ? "[]" : "[{\"groupName\":\"" + query + "\"," + "\"keywords\":[\"" + query + "\"]}]") + "," +
-        String responseBody = post(apiUrl, requestHeaders, requestBody);
-
-        List<String> seriesData = new ArrayList<>();
-        try {
-            JSONObject jsonObject = new JSONObject(responseBody);
-            if (jsonObject.has("results")) {
-                JSONArray resultsArray = jsonObject.getJSONArray("results");
-                for (int i = 0; i < resultsArray.length(); i++) {
-                    JSONObject resultObject = resultsArray.getJSONObject(i);
-                    JSONArray dataArray = resultObject.getJSONArray("data");
-                    for (int j = 0; j < dataArray.length(); j++) {
-                        JSONObject dataObject = dataArray.getJSONObject(j);
-                        String ratio = dataObject.getString("ratio");
-                        seriesData.add(ratio);
-                    }
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    @Override
-    public List<String> apiShoppingResponseY(String query, String param, String year, String month1, String day1, String year2, String month2, String day2, String timeunit, String coverage, String gender, String[] age) {
-        return null;
-    }
-
-
 
     @Override
     public boolean setDbFavoriteURL(String url, String username) {
@@ -910,20 +757,3 @@ public class MemberServiceImpl implements MemberService {
     }
 }
 
-class ResultMaps {
-    private final Map<String, List<String>> periodsMap;
-    private final Map<String, List<Double>> ratiosMap;
-
-    public ResultMaps(Map<String, List<String>> periodsMap, Map<String, List<Double>> ratiosMap) {
-        this.periodsMap = periodsMap;
-        this.ratiosMap = ratiosMap;
-    }
-
-    public Map<String, List<String>> getPeriodsMap() {
-        return periodsMap;
-    }
-
-    public Map<String, List<Double>> getRatiosMap() {
-        return ratiosMap;
-    }
-}

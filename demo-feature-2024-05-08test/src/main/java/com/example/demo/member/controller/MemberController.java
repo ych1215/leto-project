@@ -4,6 +4,7 @@ import com.example.demo.DataMining.NaverParsing;
 import com.example.demo.member.model.MemberInput;
 import com.example.demo.member.model.ResetPasswordInput;
 import com.example.demo.member.service.MemberService;
+import com.example.demo.member.service.impl.ResultMaps;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -70,9 +71,63 @@ public class MemberController {
                            Model model) throws JSONException {
         String username = principal.getName();
         model.addAttribute("username", username);
-
         if (!query1.equals("")){
-            System.out.println(memberService.calendarApiResponseX(query1, query2, query3, query4, query5, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender, age));
+            String jsonString1 = memberService.NaverApiResponse(query1, query2, query3, query4, query5, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender, age);
+
+            ResultMaps result1Maps = memberService.parseJson(jsonString1);
+
+            int i = result1Maps.getPeriodsMap().size();
+            for (String title : result1Maps.getPeriodsMap().keySet()) {
+                model.addAttribute("query"+i, title);
+                if (i==result1Maps.getPeriodsMap().size()){
+                    model.addAttribute("xAxisData", result1Maps.getPeriodsMap().get(title));
+                }
+                model.addAttribute("seriesData"+i, result1Maps.getRatiosMap().get(title));
+                System.out.println(title);
+                i--;
+            }
+        }
+
+        model.addAttribute("username", username);
+
+        String favoriteURL = "";
+
+        for (int i = 0; i < memberService.getDbFavriteURL(username).size(); i++) {
+            favoriteURL = memberService.getDbFavriteURL(username).get(i);
+            model.addAttribute("url"+(i+1), favoriteURL);
+        }
+
+        boolean isTrue1 = true;
+        boolean isTrue2 = true;
+        boolean isTrue3 = true;
+        boolean isTrue4 = true;
+        boolean isTrue5 = true;
+        boolean isTrueAll = true;
+
+        for (int i = 0; i < memberService.getDbFavriteURL(username).size(); i++) {
+            favoriteURL = memberService.getDbFavriteURL(username).get(i);
+
+            if (i==0&&favoriteURL==""){
+                isTrue1 = false;
+            }
+            if (i==1&&favoriteURL==""){
+                isTrue2 = false;
+            }
+            if (i==2&&favoriteURL==""){
+                isTrue3 = false;
+            }
+            if (i==3&&favoriteURL==""){
+                isTrue4 = false;
+            }
+            if (i==4&&favoriteURL==""){
+                isTrue5 = false;
+            }
+            if (isTrue1==true&&isTrue2==true&&isTrue3==true&&isTrue4==true&&isTrue5==true){
+                model.addAttribute("isTrueAll", isTrueAll);
+            } else {
+                isTrueAll = false;
+                model.addAttribute("isTrueAll", isTrueAll);
+            }
         }
 
         return "calendar";
@@ -683,68 +738,43 @@ public class MemberController {
                          @RequestParam(name = "device2", required = false, defaultValue = "") String coverage2,
                          @RequestParam(name = "gender2", required = false, defaultValue = "") String gender2,
                          @RequestParam(name = "age2", required = false, defaultValue = "") String[] age2,
-                         Model model){
+                         Model model) throws JSONException {
         String userName = principal.getName();
 
-        List<String> query1XAxisData = memberService.apiResponseX(query1, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
-        List<String> query1XAxis2Data = memberService.apiResponseX(query1, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
-        List<String> query1SeriesData = memberService.apiResponseY(query1, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
-        List<String> query1Series2Data = memberService.apiResponseY(query1, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
+        if (!query1.equals("")){
+            String jsonString1 = memberService.NaverApiResponse(query1, query2, query3, query4, query5, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender, age);
+            String jsonString2 = memberService.NaverApiResponse(query1, query2, query3, query4, query5, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2, age2);
 
-        model.addAttribute("xAxisData", query1XAxisData);
-        model.addAttribute("xAxis2Data", query1XAxis2Data);
-        model.addAttribute("seriesData1", query1SeriesData);
-        model.addAttribute("series2Data1", query1Series2Data);
-        model.addAttribute("query1", query1);
-        model.addAttribute("query2", query2);
-        model.addAttribute("query3", query3);
-        model.addAttribute("query4", query4);
-        model.addAttribute("query5", query5);
+            ResultMaps result1Maps = memberService.parseJson(jsonString1);
+            ResultMaps result2Maps = memberService.parseJson(jsonString2);
+
+            int i = result1Maps.getPeriodsMap().size();
+            for (String title : result1Maps.getPeriodsMap().keySet()) {
+                model.addAttribute("query"+i, title);
+                if (i==result1Maps.getPeriodsMap().size()){
+                    model.addAttribute("xAxisData", result1Maps.getPeriodsMap().get(title));
+                }
+                model.addAttribute("seriesData"+i, result1Maps.getRatiosMap().get(title));
+                System.out.println(title);
+                i--;
+            }
+            int j = result2Maps.getPeriodsMap().size();
+            for (String title : result2Maps.getPeriodsMap().keySet()) {
+                if (j==result2Maps.getPeriodsMap().size()){
+                    model.addAttribute("xAxis2Data", result2Maps.getPeriodsMap().get(title));
+                }
+                model.addAttribute("series2Data"+j, result2Maps.getRatiosMap().get(title));
+                j--;
+            }
+        }
+
         model.addAttribute("username", userName);
 
         String favoriteURL = "";
 
         for (int i = 0; i < memberService.getDbFavriteURL(userName).size(); i++) {
             favoriteURL = memberService.getDbFavriteURL(userName).get(i);
-            if (i==0){
-                model.addAttribute("url1", favoriteURL);
-            } else if (i==1) {
-                model.addAttribute("url2", favoriteURL);
-            } else if (i==2) {
-                model.addAttribute("url3", favoriteURL);
-            } else if (i==3) {
-                model.addAttribute("url4", favoriteURL);
-            } else if (i==4) {
-                model.addAttribute("url5", favoriteURL);
-            }
-        }
-
-        if (!query2.equals("")){
-            List<String> query2SeriesData = memberService.apiResponseY(query2, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
-            List<String> query2Series2Data = memberService.apiResponseY(query2, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
-            model.addAttribute("seriesData2", query2SeriesData);
-            model.addAttribute("series2Data2", query2Series2Data);
-        }
-
-        if (!query3.equals("")){
-            List<String> query3SeriesData = memberService.apiResponseY(query3, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
-            List<String> query3Series2Data = memberService.apiResponseY(query3, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
-            model.addAttribute("seriesData3", query3SeriesData);
-            model.addAttribute("series2Data3", query3Series2Data);
-        }
-
-        if (!query4.equals("")){
-            List<String> query4SeriesData = memberService.apiResponseY(query4, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
-            List<String> query4Series2Data = memberService.apiResponseY(query4, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
-            model.addAttribute("seriesData4", query4SeriesData);
-            model.addAttribute("series2Data4", query4Series2Data);
-        }
-
-        if (!query5.equals("")){
-            List<String> query5SeriesData = memberService.apiResponseY(query5, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender,  age);
-            List<String> query5Series2Data = memberService.apiResponseY(query5, year3, month3, day3, year4, month4, day4, timeunit2, coverage2, gender2,  age2);
-            model.addAttribute("seriesData5", query5SeriesData);
-            model.addAttribute("series2Data5", query5Series2Data);
+            model.addAttribute("url"+(i+1), favoriteURL);
         }
 
         boolean isTrue1 = true;
@@ -772,7 +802,6 @@ public class MemberController {
             if (i==4&&favoriteURL==""){
                 isTrue5 = false;
             }
-
             if (isTrue1==true&&isTrue2==true&&isTrue3==true&&isTrue4==true&&isTrue5==true){
                 model.addAttribute("isTrueAll", isTrueAll);
             } else {
