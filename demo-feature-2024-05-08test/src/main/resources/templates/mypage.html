@@ -31,7 +31,6 @@
     <link href="/css/style.css" rel="stylesheet" />
     <!-- responsive style -->
     <link href="/css/responsive.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 </head>
 
@@ -45,44 +44,28 @@
         </div>
     </div>
 
-    <div th:insert="~{/fragments/topBeforeFragment :: topBeforeFragment}"></div>
+    <div th:insert="~{/fragments/topFragment :: topFragment}"></div>
 </div>
 
-
-<!-- service section -->
-
 <section class="service_section layout_padding">
-    <div class="service_content">
-        <h1>회원 비밀번호</h1>
-        <h1>초기화</h1>
-        <br>
-        <div th:if="${result eq true}">
-            <form method="post">
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" name="password" placeholder="비밀번호 입력" required>
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" name="rePassword" placeholder="확인 비밀번호 입력" required/>
-                </div>
-                <div>
-                    <button type="submit" class="form_btn">비밀번호 재설정</button>
-                </div>
-            </form>
-        </div>
-        <div th:if="${result eq false}">
-            <p>입력값이 유효하지 않습니다.</p>
-            <div>
-                <button type="button" class="form_btn" onclick="window.location.href='/login'">로그인 화면으로</button>
+    <div class="service_container">
+        <div class="container">
+            <div class="heading_container heading_center">
+                <h1>
+                    My<span>Page</span>
+                </h1>
+                <br>
+                <div>회원정보 </div>
+                <span> 아이디 : <span th:text="${username}"></span></span>
+                <span> 전화번호 : <span th:text="${phone}"></span><a href="changePhone"> 수정</a></span>
+                <span> 이름 : <span th:text="${name}"></span><a href="changeName"> 수정</a></span>
+                <span><a href="changePwd">비밀번호  초기화</a></span>
             </div>
         </div>
     </div>
 </section>
 
-<!-- end service section -->
-
-<div th:insert="~{/fragments/bottomBeforeFragment :: bottomBeforeFragment}"></div>
+<div th:insert="~{/fragments/bottomFragment :: bottomFragment}"></div>
 
 <!-- jQery -->
 <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>

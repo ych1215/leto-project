@@ -4,10 +4,12 @@ import com.example.demo.admin.dto.MemberDto;
 import com.example.demo.admin.model.MemberParam;
 import com.example.demo.member.model.MemberInput;
 import com.example.demo.member.model.ResetPasswordInput;
+import org.json.JSONException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public interface MemberService extends UserDetailsService {
 
@@ -36,6 +38,10 @@ public interface MemberService extends UserDetailsService {
     MemberDto detail(String userId);
     List<String> apiResponseX(String query, String year, String  month1, String day1, String year2, String month2, String day2, String timeunit, String coverage, String gender, String[] age);
     List<String> apiResponseY(String query, String year, String  month1, String day1, String year2, String month2, String day2, String timeunit, String coverage, String gender, String[] age);
+    Map<String, List<String>> calendarApiResponseX(String query1, String query2, String query3, String query4, String query5, String year, String  month1, String day1, String year2, String month2, String day2, String timeunit, String coverage, String gender, String[] age) throws JSONException;
+
+    Map<String, List<Double>> calendarApiResponse(String query1, String query2, String query3, String query4, String query5, String year, String month1, String day1, String year2, String month2, String day2, String timeunit, String coverage, String gender, String[] age) throws JSONException;
+
     List<String> apiShoppingResponseX(String query, String param, String year, String month1, String day1, String year2, String month2, String day2, String timeunit, String coverage, String gender, String[] age);
     List<String> apiShoppingResponseY(String title, String param, String year, String month1, String day1, String year2, String month2, String day2, String timeunit, String coverage, String gender, String[] age);
     boolean setDbFavoriteURL(String url, String username);
@@ -55,5 +61,10 @@ public interface MemberService extends UserDetailsService {
 
     ArrayList<String> getAge1(String str);
     ArrayList<String> getAge2(String str);
+    boolean changeName(String name, String username);
+    boolean changePhone(String phone, String username);
+
+    String getName(String username);
+    String getPhone(String username);
 
 }

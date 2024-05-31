@@ -12,6 +12,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="shortcut icon" href="/images/Logo.png" type="">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <title> LETO Trends </title>
 
@@ -31,7 +32,6 @@
     <link href="/css/style.css" rel="stylesheet" />
     <!-- responsive style -->
     <link href="/css/responsive.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 </head>
 
@@ -45,36 +45,39 @@
         </div>
     </div>
 
-    <div th:insert="~{/fragments/topBeforeFragment :: topBeforeFragment}"></div>
+    <div th:insert="~{/fragments/topFragment :: topFragment}"></div>
 </div>
 
 
 <!-- service section -->
 
 <section class="service_section layout_padding">
-    <div class="service_content">
-        <h1>회원 비밀번호</h1>
-        <h1>초기화</h1>
-        <br>
-        <div th:if="${result eq true}">
-            <form method="post">
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" name="password" placeholder="비밀번호 입력" required>
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" name="rePassword" placeholder="확인 비밀번호 입력" required/>
-                </div>
-                <div>
-                    <button type="submit" class="form_btn">비밀번호 재설정</button>
-                </div>
-            </form>
-        </div>
-        <div th:if="${result eq false}">
-            <p>입력값이 유효하지 않습니다.</p>
-            <div>
-                <button type="button" class="form_btn" onclick="window.location.href='/login'">로그인 화면으로</button>
+    <div class="service_container">
+        <div class="container">
+            <div class="heading_container heading_center">
+                <h1>
+                    비밀번호 <span>초기화</span>
+                </h1>
+                <br>
+                <div th:text="${errorMessage}" class="error_message"></div>
+                <form method="post" class="forgot_password_form">
+                    <div class="input-container">
+                        <div class="input-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" name="userId" placeholder="아이디(이메일)을 입력" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-user"></i>
+                            <input type="text" name="userName" placeholder="이름 입력" required>
+                        </div>
+                        <div class="button-container">
+                            <button type="submit">비밀번호 초기화 요청</button>
+                        </div>
+                        <div class="button-container">
+                            <a href="/mypage">마이 페이지로</a>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -82,7 +85,8 @@
 
 <!-- end service section -->
 
-<div th:insert="~{/fragments/bottomBeforeFragment :: bottomBeforeFragment}"></div>
+
+<div th:insert="~{/fragments/bottomFragment :: bottomFragment}"></div>
 
 <!-- jQery -->
 <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>

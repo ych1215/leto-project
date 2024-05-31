@@ -74,8 +74,34 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean emailAuth(String uuid) {
+    public boolean changeName(String name, String username) {
+        Optional<Member> optionalMember = memberRepository.findById(username);
 
+        Member member = optionalMember.get();
+
+        member.setUserName(name);
+
+        memberRepository.save(member);
+
+        return true;
+    }
+
+    @Override
+    public boolean changePhone(String phone, String username) {
+        Optional<Member> optionalMember = memberRepository.findById(username);
+
+        Member member = optionalMember.get();
+
+        member.setPhone(phone);
+
+        memberRepository.save(member);
+
+        return true;
+    }
+
+
+    @Override
+    public boolean emailAuth(String uuid) {
         Optional<Member> optionalMember = memberRepository.findByEmailAuthKey(uuid);//null이 가능한 member안의 인스턴스를 optionalMember객체에연결하고 memberrepository에서 emailauthkey를 찾아서연결
         if (!optionalMember.isPresent()) {
             return false;
@@ -96,7 +122,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean sendResetPassword(ResetPasswordInput parameter) {
-
         Optional<Member> optionalMember = memberRepository.findByUserIdAndUserName(parameter.getUserId(), parameter.getUserName());
         if (!optionalMember.isPresent()) {
             throw new UsernameNotFoundException("회원 정보가 존재하지않습니다.");
@@ -112,8 +137,8 @@ public class MemberServiceImpl implements MemberService {
 
         String email = parameter.getUserId();
         String subject = "[demo] 비밀번호 초기화 메일 입니다.";
-        String text = "<p> demo 비밀번호 초기화 메일입니다.</p> <p>아래 링크를 클릭하셔서 비밀번호를 초기화 해주세요.</p>" + "http://localhost:8080/member/reset/password?id=" + uuid
-                + "<div><a target='_blank' href='http://localhost:8080/member/reset/password?id=" + uuid + "'> 비밀번호 초기화 링크 </a></div>";
+        String text = "<p> demo 비밀번호 초기화 메일입니다.</p> <p>아래 링크를 클릭하셔서 비밀번호를 초기화 해주세요.</p>" +
+                "<div><a target='_blank' href='http://localhost:8080/member/reset/password?id=" + uuid + "'> 비밀번호 초기화 링크 </a></div>";
         mailComponents.sendMail(email, subject, text);
 
         return true;
@@ -295,6 +320,71 @@ public class MemberServiceImpl implements MemberService {
         }
 
         return seriesData;
+    }
+
+    @Override
+    public Map<String, List<String>> calendarApiResponseX(String query1, String query2, String query3, String query4, String query5, String year, String month1, String day1, String year2, String month2, String day2, String timeunit, String coverage, String gender, String[] age) throws JSONException {
+        String clientId = "MUAayGwsDMWNiVmux424"; // 애플리케이션 클라이언트 아이디
+        String clientSecret = "ahi_7KupeV"; // 애플리케이션 클라이언트 시크릿
+
+        String apiUrl = "https://openapi.naver.com/v1/datalab/search";
+
+        Map<String, String> requestHeaders = new HashMap<>();
+        requestHeaders.put("X-Naver-Client-Id", clientId);
+        requestHeaders.put("X-Naver-Client-Secret", clientSecret);
+        requestHeaders.put("Content-Type", "application/json");
+
+        String agesString = "";
+        if (age != null) {
+            agesString = "[" + Arrays.stream(age)
+                    .map(a -> "\"" + a + "\"")
+                    .collect(Collectors.joining(",")) + "]";
+        }
+
+        String requestBody = "{\"startDate\":\"" + year + "-" + month1 + "-" + day1 + "\"," +
+                "\"endDate\":\"" + year2 + "-" + month2 + "-" + day2 + "\"," +
+                "\"timeUnit\":\"" +  timeunit + "\"," +
+                "\"keywordGroups\":" + "[{\"groupName\":\"" + query1 + "\"," + "\"keywords\":[\"" + query1 + "\"]}" +
+                (query2.isBlank() ? "]," : ",{\"groupName\":\"" + query2 + "\"," + "\"keywords\":[\"" + query2 + "\"]}") +
+                (query2.isBlank() ? "" : (query3.isBlank() ? "]," : ",{\"groupName\":\"" + query3 + "\"," + "\"keywords\":[\"" + query3 + "\"]}")) +
+                (query3.isBlank() ? "" : (query4.isBlank() ? "]," : ",{\"groupName\":\"" + query4 + "\"," + "\"keywords\":[\"" + query4 + "\"]}")) +
+                (query4.isBlank() ? "" : (query5.isBlank() ? "]," : ",{\"groupName\":\"" + query5 + "\"," + "\"keywords\":[\"" + query5 + "\"]}],")) +
+                "\"device\":\"" + coverage + "\"," +
+                "\"ages\":" + agesString + "," +
+                "\"gender\":\"" + gender + "\"}";
+
+        String responseBody = post(apiUrl, requestHeaders, requestBody);
+
+        JSONObject jsonObject = new JSONObject(responseBody);
+        JSONArray resultsArray = jsonObject.getJSONArray("results");
+
+        // Create a map to hold periods and ratios for each title
+        Map<String, List<String>> periodsMap = new HashMap<>();
+        Map<String, List<Double>> ratiosMap = new HashMap<>();
+
+        // Iterate over the results array
+        for (int i = 0; i < resultsArray.length(); i++) {
+            JSONObject result = resultsArray.getJSONObject(i);
+            String title = result.getString("title");
+            JSONArray dataArray = result.getJSONArray("data");
+
+            // Initialize lists for periods and ratios
+            List<String> periods = new ArrayList<>();
+            List<Double> ratios = new ArrayList<>();
+
+            // Iterate over the data array
+            for (int j = 0; j < dataArray.length(); j++) {
+                JSONObject dataPoint = dataArray.getJSONObject(j);
+                periods.add(dataPoint.getString("period"));
+                ratios.add(dataPoint.getDouble("ratio"));
+            }
+
+            // Put the lists into the map
+            periodsMap.put(title, periods);
+            ratiosMap.put(title, ratios);
+        }
+
+        return periodsMap;
     }
 
     @Override
@@ -776,6 +866,26 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public String getName(String username) {
+        Optional<Member> optionalMember = memberRepository.findById(username);
+
+        Member member = optionalMember.get();
+        String name = "";
+        name = member.getUserName();
+        return name;
+    }
+
+    @Override
+    public String getPhone(String username) {
+        Optional<Member> optionalMember = memberRepository.findById(username);
+
+        Member member = optionalMember.get();
+        String phone = "";
+        phone = member.getPhone();
+        return phone;
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         Optional<Member> optionalMember = memberRepository.findById(username);
@@ -797,5 +907,23 @@ public class MemberServiceImpl implements MemberService {
         }
 
         return new User(member.getUserId(), member.getPassword(), grantedAuthorities);
+    }
+}
+
+class ResultMaps {
+    private final Map<String, List<String>> periodsMap;
+    private final Map<String, List<Double>> ratiosMap;
+
+    public ResultMaps(Map<String, List<String>> periodsMap, Map<String, List<Double>> ratiosMap) {
+        this.periodsMap = periodsMap;
+        this.ratiosMap = ratiosMap;
+    }
+
+    public Map<String, List<String>> getPeriodsMap() {
+        return periodsMap;
+    }
+
+    public Map<String, List<Double>> getRatiosMap() {
+        return ratiosMap;
     }
 }

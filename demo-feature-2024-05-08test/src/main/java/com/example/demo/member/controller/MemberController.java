@@ -7,9 +7,11 @@ import com.example.demo.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.eclipse.tags.shaded.org.apache.xpath.operations.Mod;
 import org.json.simple.JSONArray;
 import org.json.JSONException;
 import org.json.simple.JSONObject;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,14 +36,11 @@ public class MemberController {
 
     @GetMapping("/member/register")
     public String register() {
-
         return "member/register";
     }
 
     @PostMapping("/member/register")
-    public String registerSubmit(Model model, HttpServletRequest request
-            , MemberInput parameter) {
-
+    public String registerSubmit(Model model, MemberInput parameter) {
         boolean result = memberService.register(parameter);
 
         model.addAttribute("result", result);
@@ -49,6 +48,100 @@ public class MemberController {
         return "member/register_complete";
         //서비스의 비지니스로직을 활용해  멤버인풋 파라미터를 받아와 데이터베이스에 정상적으로 저장되면 회원가입이 완료되었습니다 아니면 실패하였습니다.
         //그리고 이메일을 보낸다
+    }
+
+    @GetMapping("/calendar")
+    public String calendar(Principal principal,
+                           @RequestParam(name = "query1", required = false, defaultValue = "") String query1,
+                           @RequestParam(name = "query2", required = false, defaultValue = "") String query2,
+                           @RequestParam(name = "query3", required = false, defaultValue = "") String query3,
+                           @RequestParam(name = "query4", required = false, defaultValue = "") String query4,
+                           @RequestParam(name = "query5", required = false, defaultValue = "") String query5,
+                           @RequestParam(name = "year", required = false, defaultValue = "") String year1,
+                           @RequestParam(name = "month", required = false, defaultValue = "") String month1,
+                           @RequestParam(name = "day", required = false, defaultValue = "") String day1,
+                           @RequestParam(name = "year2", required = false, defaultValue = "") String year2,
+                           @RequestParam(name = "month2", required = false, defaultValue = "") String month2,
+                           @RequestParam(name = "day2", required = false, defaultValue = "") String day2,
+                           @RequestParam(name = "select_day_week_month", required = false, defaultValue = "") String timeunit,
+                           @RequestParam(name = "device", required = false, defaultValue = "") String coverage,
+                           @RequestParam(name = "gender", required = false, defaultValue = "") String gender,
+                           @RequestParam(name = "age", required = false, defaultValue = "") String[] age,
+                           Model model) throws JSONException {
+        String username = principal.getName();
+        model.addAttribute("username", username);
+
+        if (!query1.equals("")){
+            System.out.println(memberService.calendarApiResponseX(query1, query2, query3, query4, query5, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender, age));
+        }
+
+        return "calendar";
+    }
+    @GetMapping("/mypage")
+    public String mypage(Principal principal,
+                         Model model) {
+        String username = principal.getName();
+        String user_name = memberService.getName(username);
+        String phone = memberService.getPhone(username);
+        model.addAttribute("username", username);
+        model.addAttribute("name", user_name);
+        model.addAttribute("phone", phone);
+
+        return "mypage";
+    }
+
+    @GetMapping("/changeName")
+    public String changeName(Principal principal, Model model){
+        String username = principal.getName();
+        String user_name = memberService.getName(username);
+
+        model.addAttribute("username", username);
+        model.addAttribute("name", user_name);
+
+        return "changeName";
+    }
+
+    @PostMapping("/changeName")
+    public String changeNamePost(Principal principal,
+                             @RequestParam(name = "name", required = false, defaultValue = "") String name,
+                             Model model){
+        String username = principal.getName();
+        String user_name = memberService.getName(username);
+
+        if (!name.equals("")){
+            memberService.changeName(name, username);
+        }
+        System.out.println(name);
+        model.addAttribute("username", username);
+        model.addAttribute("name", user_name);
+
+        return "changeName";
+    }
+
+    @GetMapping("/changePhone")
+    public String changePhone(Principal principal,
+                           Model model){
+        String username = principal.getName();
+        String phone = memberService.getPhone(username);
+        model.addAttribute("username", username);
+        model.addAttribute("phone", phone);
+        return "changePhone";
+    }
+
+    @PostMapping("/changePhone")
+    public String changePhone(Principal principal,
+                              @RequestParam(name = "phone", required = false, defaultValue = "") String phone,
+                              Model model){
+        String username = principal.getName();
+        String rphone = memberService.getPhone(username);
+
+        if (!phone.equals("")){
+            memberService.changePhone(phone, username);
+        }
+        model.addAttribute("username", username);
+        model.addAttribute("phone", rphone);
+
+        return "changePhone";
     }
 
     @GetMapping("/wordcloud")
@@ -751,7 +844,7 @@ public class MemberController {
     @GetMapping("/manual")
     public String home_why(Principal principal, Model model) {
 
-        return "maual";
+        return "manual";
     }
 
     @GetMapping("/member/reset/password")
@@ -765,10 +858,44 @@ public class MemberController {
         return "member/reset_password";
     }
 
+    @PostMapping("/member/reset/password")
+    public String resetPasswordSubmit(Model model, ResetPasswordInput parameter) {
+        boolean result = false;
+        try{
+            result = memberService.resetPassword(parameter.getId(), parameter.getPassword());
+        } catch (Exception e) {
+        }
+
+        model.addAttribute("result", result);
+
+        return "member/reset_password_result";
+    }
+
     @GetMapping("/member/info")
     public String memberInfo() {
 
         return "member/info";
+    }
+
+    @GetMapping("/changePwd")
+    public String changePwd(Principal principal, Model model) {
+        String username = principal.getName();
+        model.addAttribute("username", username);
+        return "changePwd";
+    }
+
+    @PostMapping("/changePwd")
+    public String changePwd(Model model, ResetPasswordInput parameter) {
+
+        boolean result = false;
+        try {
+            result = memberService.sendResetPassword(parameter);
+        }catch (Exception e) {
+        }
+
+        model.addAttribute("result", result);
+
+        return "member/change_password_result";
     }
 
     @GetMapping("/member/find/password")
@@ -791,17 +918,6 @@ public class MemberController {
         return "member/find_password_result";
     }
 
-    @PostMapping("/member/reset/password")
-    public String resetPasswordSubmit(Model model, ResetPasswordInput parameter) {
-        boolean result = false;
-        try{
-            result = memberService.resetPassword(parameter.getId(), parameter.getPassword());
-        } catch (Exception e) {
-        }
 
-        model.addAttribute("result", result);
-
-        return "member/reset_password_result";
-    }
 
 }
