@@ -23,6 +23,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
@@ -71,24 +72,24 @@ public class MemberController {
                            Model model) throws JSONException {
         String username = principal.getName();
         model.addAttribute("username", username);
+
         if (!query1.equals("")){
-            String jsonString1 = memberService.NaverApiResponse(query1, query2, query3, query4, query5, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender, age);
-
-            ResultMaps result1Maps = memberService.parseJson(jsonString1);
-
+            String jsonString = memberService.NaverApiResponse(query1, query2, query3, query4, query5, year1, month1, day1, year2, month2, day2, timeunit, coverage, gender, age);
+            ResultMaps result1Maps = memberService.parseJson(jsonString);
             int i = result1Maps.getPeriodsMap().size();
+            ArrayList<String> titles = new ArrayList<>();
             for (String title : result1Maps.getPeriodsMap().keySet()) {
-                model.addAttribute("query"+i, title);
+                titles.add(title);
                 if (i==result1Maps.getPeriodsMap().size()){
-                    model.addAttribute("xAxisData", result1Maps.getPeriodsMap().get(title));
+                    model.addAttribute("years", result1Maps.getPeriodsMap().get(title));
+                    System.out.println(result1Maps.getPeriodsMap().get(title));
                 }
-                model.addAttribute("seriesData"+i, result1Maps.getRatiosMap().get(title));
-                System.out.println(title);
+                model.addAttribute("value"+i, result1Maps.getRatiosMap().get(title));
+                System.out.println(result1Maps.getRatiosMap().get(title));
                 i--;
             }
+            model.addAttribute("title", titles);
         }
-
-        model.addAttribute("username", username);
 
         String favoriteURL = "";
 

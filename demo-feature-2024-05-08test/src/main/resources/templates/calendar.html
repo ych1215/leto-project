@@ -14,10 +14,8 @@
     <link rel="shortcut icon" href="/images/Logo.png" type="">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-    <title> LETO Trends </title>
-
-    <script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-core.min.js"></script>
-    <script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-heatmap.min.js"></script>
+    <title>Naver Trend AnyChart Heatmap</title>
+    <script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-bundle.min.js"></script>
     <style>
         html, body, #container {
             width: 100%;
@@ -225,11 +223,11 @@
     <div th:insert="~{/fragments/topFragment :: topFragment}"></div>
 </div>
 
-<form method="get" id="myForm">
+<form action="calendar" method="get" id="myForm">
     <div class="item1">
         <br><br><br>
         <h1>
-            차트 <span>비교분석</span>
+            히트맵 <span>비교분석</span>
         </h1>
         <input type="text" placeholder="검색어1(필수)" name="query1" required/>
 
@@ -242,7 +240,6 @@
         <input type="hidden" id="hidden4" placeholder="검색어5" name="query5"/>
 
         <button class="custom-btn btn-7" type="button" id="addSearchBox">검색어 추가</button>
-
         <script>
             document.getElementById('addSearchBox').addEventListener('click', function() {
                 var form = document.getElementById('myForm');
@@ -256,10 +253,8 @@
             });
         </script>
     </div>
-
     <div class="item2">
         <br>
-        <strong>비교군1 : </strong>
         <strong class="title">기간</strong>
         <label for="selectYear1"></label><select name="year" id="selectYear1">
         <option value="2016">2016</option>
@@ -401,65 +396,94 @@
     <br>
     <button class="custom-btn btn-7 item4" id="search_button" type="submit">LETO 검색 데이터 조회</button>
 </form>
-
-<div id="container"></div>
 <script th:inline="javascript">
-    anychart.onDocumentReady(function () {
+    anychart.onDocumentReady(function() {
+        var titles = [[${title}]];
+// 연도 리스트
+        var years = [[${years}]];
+// 값 리스트
+        var value1 = [[${value1}]];
+        var value2 = [[${value2}]];
+        var value3 = [[${value3}]];
+        var value4 = [[${value4}]];
+        var value5 = [[${value5}]];
 
-        // create the data
-        var data = [
-            { x: "2010", y: "Arab States", heat: 0.676 },
-            { x: "2010", y: "East Asia and the Pacific", heat: 0.691 },
-            { x: "2010", y: "Europe and Central Asia", heat: 0.735 },
-            { x: "2010", y: "Latin America and the Caribbean", heat: 0.731 },
-            { x: "2010", y: "South Asia", heat: 0.585 },
-            { x: "2011", y: "Arab States", heat: 0.681 },
-            { x: "2011", y: "East Asia and the Pacific", heat: 0.700 },
-            { x: "2011", y: "Europe and Central Asia", heat: 0.744 },
-            { x: "2011", y: "Latin America and the Caribbean", heat: 0.737 },
-            { x: "2011", y: "South Asia", heat: 0.593 },
-            { x: "2012", y: "Arab States", heat: 0.687 },
-            { x: "2012", y: "East Asia and the Pacific", heat: 0.707 },
-            { x: "2012", y: "Europe and Central Asia", heat: 0.750 },
-            { x: "2012", y: "Latin America and the Caribbean", heat: 0.740 },
-            { x: "2012", y: "South Asia", heat: 0.601 },
-            { x: "2013", y: "Arab States", heat: 0.688 },
-            { x: "2013", y: "East Asia and the Pacific", heat: 0.714 },
-            { x: "2013", y: "Europe and Central Asia", heat: 0.759 },
-            { x: "2013", y: "Latin America and the Caribbean", heat: 0.748 },
-            { x: "2013", y: "South Asia", heat: 0.607 },
-            { x: "2014", y: "Arab States", heat: 0.691 },
-            { x: "2014", y: "East Asia and the Pacific", heat: 0.721 },
-            { x: "2014", y: "Europe and Central Asia", heat: 0.766 },
-            { x: "2014", y: "Latin America and the Caribbean", heat: 0.752 },
-            { x: "2014", y: "South Asia", heat: 0.617 },
-            { x: "2015", y: "Arab States", heat: 0.695 },
-            { x: "2015", y: "East Asia and the Pacific", heat: 0.727 },
-            { x: "2015", y: "Europe and Central Asia", heat: 0.770 },
-            { x: "2015", y: "Latin America and the Caribbean", heat: 0.754 },
-            { x: "2015", y: "South Asia", heat: 0.624 },
-            { x: "2016", y: "Arab States", heat: 0.699 },
-            { x: "2016", y: "East Asia and the Pacific", heat: 0.733 },
-            { x: "2016", y: "Europe and Central Asia", heat: 0.772 },
-            { x: "2016", y: "Latin America and the Caribbean", heat: 0.756 },
-            { x: "2016", y: "South Asia", heat: 0.634 },
-            { x: "2017", y: "Arab States", heat: 0.699 },
-            { x: "2017", y: "East Asia and the Pacific", heat: 0.733 },
-            { x: "2017", y: "Europe and Central Asia", heat: 0.771 },
-            { x: "2017", y: "Latin America and the Caribbean", heat: 0.758 },
-            { x: "2017", y: "South Asia", heat: 0.638 },
-            { x: "2018", y: "Arab States", heat: 0.703 },
-            { x: "2018", y: "East Asia and the Pacific", heat: 0.741 },
-            { x: "2018", y: "Europe and Central Asia", heat: 0.779 },
-            { x: "2018", y: "Latin America and the Caribbean", heat: 0.759 },
-            { x: "2018", y: "South Asia", heat: 0.642 },
-        ];
+// 데이터 형식에 맞춰 배열 생성
+        var data = [];
+        let total = titles.length;
+        if (total==5){
+            for (var i = 0; i<titles.length; i++){
+                for (var j = 0; j < years.length; j++) {
+                    if (i==0){
+                        data.push([years[j], titles[i], value5[j]]);
+                    }else if (i==1){
+                        data.push([years[j], titles[i], value4[j]]);
+                    }else if (i==2){
+                        data.push([years[j], titles[i], value3[j]]);
+                    }else if (i==3){
+                        data.push([years[j], titles[i], value2[j]]);
+                    }else if (i==4){
+                        data.push([years[j], titles[i], value1[j]]);
+                    }
+                }
+            }
+        }else if (total==4){
+            for (var i = 0; i<titles.length; i++){
+                for (var j = 0; j < years.length; j++) {
+                    if (i==0){
+                        data.push([years[j], titles[i], value4[j]]);
+                    }else if (i==1){
+                        data.push([years[j], titles[i], value3[j]]);
+                    }else if (i==2){
+                        data.push([years[j], titles[i], value2[j]]);
+                    }else if (i==3){
+                        data.push([years[j], titles[i], value1[j]]);
+                    }
+                }
+            }
+        }else if (total==3){
+            for (var i = 0; i<titles.length; i++){
+                for (var j = 0; j < years.length; j++) {
+                    if (i==0){
+                        data.push([years[j], titles[i], value3[j]]);
+                    }else if (i==1){
+                        data.push([years[j], titles[i], value2[j]]);
+                    }else if (i==2){
+                        data.push([years[j], titles[i], value1[j]]);
+                    }
+                }
+            }
+        }else if (total==2){
+            for (var i = 0; i<titles.length; i++){
+                for (var j = 0; j < years.length; j++) {
+                    if (i==0){
+                        data.push([years[j], titles[i], value2[j]]);
+                    }else if (i==1){
+                        data.push([years[j], titles[i], value1[j]]);
+                    }
+                }
+            }
+        }else if (total==1){
+            for (var i = 0; i<titles.length; i++){
+                for (var j = 0; j < years.length; j++) {
+                    data.push([years[j], titles[i], value1[j]]);
+                }
+            }
+        }
 
-        // create the chart and set the data
-        chart = anychart.heatMap(data);
 
-        // set the chart title
-        chart.title("Human Development Index by region (2010-2018)");
+
+
+// 데이터 세트 생성
+        var dataSet = anychart.data.set(data);
+
+// Heatmap 생성
+        var chart = anychart.heatMap(dataSet);
+
+// Heatmap 설정
+        chart.title("Heatmap with Separate Lists");
+        chart.xAxis().title("Years");
+        chart.yAxis().title("Titles");
 
         // create and configure the color scale.
         var customColorScale = anychart.scales.linearColor();
@@ -468,14 +492,12 @@
         // set the color scale as the color scale of the chart
         chart.colorScale(customColorScale);
 
-        // set the container id
+// Heatmap 그리기
         chart.container("container");
-
-        // initiate drawing the chart
         chart.draw();
-
     });
 </script>
+<div id="container"></div>
 
 <div th:insert="~{/fragments/bottomFragment :: bottomFragment}"></div>
 

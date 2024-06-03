@@ -39,6 +39,7 @@ public interface MemberService extends UserDetailsService {
     MemberDto detail(String userId);
     String NaverApiResponse(String query1, String query2, String query3, String query4, String query5, String year, String  month1, String day1, String year2, String month2, String day2, String timeunit, String coverage, String gender, String[] age) throws JSONException;
     ResultMaps parseJson(String jsonString) throws JSONException;
+    Map<String, Integer> trendData(String jsonString) throws JSONException;
     boolean setDbFavoriteURL(String url, String username);
     ArrayList<String> getDbFavriteURL(String username);
     ArrayList<String> extractUrl(String str);

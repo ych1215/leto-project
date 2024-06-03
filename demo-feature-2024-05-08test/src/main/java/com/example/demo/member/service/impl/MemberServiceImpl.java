@@ -286,6 +286,26 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public   Map<String, Integer> trendData(String jsonString) throws JSONException {
+        JSONObject jsonResponse = new JSONObject(jsonString);
+        JSONArray results = jsonResponse.getJSONArray("results");
+
+        Map<String, Integer> trendData = new HashMap<>();
+        for (int i = 0; i < results.length(); i++) {
+            JSONObject result = results.getJSONObject(i);
+            JSONArray data = result.getJSONArray("data");
+            for (int j = 0; j < data.length(); j++) {
+                JSONObject item = data.getJSONObject(j);
+                String date = item.getString("period");
+                int ratio = item.getInt("ratio");
+                trendData.put(date, ratio);
+            }
+        }
+
+        return trendData;
+    }
+
+    @Override
     public boolean setDbFavoriteURL(String url, String username) {
         Optional<Member> optionalMember = memberRepository.findById(username);
 
