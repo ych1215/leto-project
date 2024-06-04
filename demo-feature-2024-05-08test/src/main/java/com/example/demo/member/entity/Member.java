@@ -42,6 +42,16 @@ public class Member {
     private String favorite4;
     @Column(length = 50000)
     private String favorite5;
+    @Column(length = 50000)
+    private String cal_favorite1;
+    @Column(length = 50000)
+    private String cal_favorite2;
+    @Column(length = 50000)
+    private String cal_favorite3;
+    @Column(length = 50000)
+    private String cal_favorite4;
+    @Column(length = 50000)
+    private String cal_favorite5;
 
     //관리자 여부를 지정할꺼냐?
     //회원에 따른 ROLE을 지정할거냐??

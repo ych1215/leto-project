@@ -44,6 +44,11 @@
     <link href="/css/responsive.css" rel="stylesheet" />
 
     <script>
+        function pageUrl() {
+            var sHref = decodeURI(location.href);
+            return sHref;
+        }
+
         window.onscroll = function() {
             var button = document.getElementById("fixedButton");
             var scrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -213,13 +218,6 @@
 <body class="sub_page">
 
 <div class="hero_area">
-
-    <div class="hero_bg_box">
-        <div class="bg_img_box">
-            <img src="/images/hero-bg.png" alt="">
-        </div>
-    </div>
-
     <div th:insert="~{/fragments/topFragment :: topFragment}"></div>
 </div>
 
@@ -396,6 +394,32 @@
     <br>
     <button class="custom-btn btn-7 item4" id="search_button" type="submit">LETO 검색 데이터 조회</button>
 </form>
+<div class="item3">
+    <form action="/calendarFavoriteUrl" onsubmit="return clickAlert()" method="get">
+        <div>
+            <input type="hidden" name="url" id="urlInput" value="">
+            <script th:inline="javascript">
+                document.getElementById('urlInput').value = pageUrl();
+                function clickAlert() {
+                    var inputValue = document.getElementById('urlInput').value;
+                    if (pageUrl()==="http://localhost:8080/calendar") {
+                        alert("검색후 즐겨찾기하실수 있습니다.");
+                        return false;
+                    } else if (pageUrl()===[[${url1}]]||pageUrl()===[[${url2}]]||pageUrl()===[[${url3}]]||pageUrl()===[[${url4}]]||pageUrl()===[[${url5}]]) {
+                        alert("동일한 검색조건은 즐겨찾기하실 수없습니다.")
+                        return false;
+                    }else if ([[${isTrueAll}]]) {
+                        alert("즐겨찾기는 5개까지 추가가능합니다.")
+                        return false;
+                    }
+                }
+            </script>
+            <button class="custom-btn btn-7" type="submit">즐겨찾기 추가</button>
+            <button class="custom-btn btn-7" type="button" onclick="window.location.href='/calendarFavoriteUrl'">즐겨찾기 목록</button>
+        </div>
+    </form>
+</div>
+
 <script th:inline="javascript">
     anychart.onDocumentReady(function() {
         var titles = [[${title}]];
@@ -470,9 +494,6 @@
                 }
             }
         }
-
-
-
 
 // 데이터 세트 생성
         var dataSet = anychart.data.set(data);

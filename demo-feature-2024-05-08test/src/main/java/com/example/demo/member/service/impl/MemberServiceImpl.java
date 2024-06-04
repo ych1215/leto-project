@@ -286,26 +286,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public   Map<String, Integer> trendData(String jsonString) throws JSONException {
-        JSONObject jsonResponse = new JSONObject(jsonString);
-        JSONArray results = jsonResponse.getJSONArray("results");
-
-        Map<String, Integer> trendData = new HashMap<>();
-        for (int i = 0; i < results.length(); i++) {
-            JSONObject result = results.getJSONObject(i);
-            JSONArray data = result.getJSONArray("data");
-            for (int j = 0; j < data.length(); j++) {
-                JSONObject item = data.getJSONObject(j);
-                String date = item.getString("period");
-                int ratio = item.getInt("ratio");
-                trendData.put(date, ratio);
-            }
-        }
-
-        return trendData;
-    }
-
-    @Override
     public boolean setDbFavoriteURL(String url, String username) {
         Optional<Member> optionalMember = memberRepository.findById(username);
 
@@ -329,7 +309,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public ArrayList<String> getDbFavriteURL(String username) {
+    public ArrayList<String> getDbFavoriteURL(String username) {
         Optional<Member> optionalMember = memberRepository.findById(username);
         Member member = optionalMember.get();
 
@@ -357,6 +337,66 @@ public class MemberServiceImpl implements MemberService {
         }
         if (member.getFavorite5()!=null) {
             favoriteURL.add(member.getFavorite5());
+        }else {
+            favoriteURL.add("");
+        }
+
+        return favoriteURL;
+    }
+
+    @Override
+    public boolean setDbCalFavoriteURL(String url, String username) {
+        Optional<Member> optionalMember = memberRepository.findById(username);
+
+        Member member = optionalMember.get();
+
+        if (member.getCal_favorite1()==null){
+            member.setCal_favorite1(url);
+        } else if (member.getCal_favorite2()==null) {
+            member.setCal_favorite2(url);
+        } else if (member.getCal_favorite3()==null) {
+            member.setCal_favorite3(url);
+        } else if (member.getCal_favorite4()==null) {
+            member.setCal_favorite4(url);
+        } else if (member.getCal_favorite5()==null) {
+            member.setCal_favorite5(url);
+        }
+
+        memberRepository.save(member);
+
+        return true;
+    }
+
+    @Override
+    public ArrayList<String> getDbCalFavoriteURL(String username) {
+        Optional<Member> optionalMember = memberRepository.findById(username);
+
+        Member member = optionalMember.get();
+
+        ArrayList<String> favoriteURL = new ArrayList<>();
+
+        if(member.getCal_favorite1()!=null){
+            favoriteURL.add(member.getCal_favorite1());
+        }else {
+            favoriteURL.add("");
+        }
+        if (member.getCal_favorite2()!=null){
+            favoriteURL.add(member.getCal_favorite2());
+        }else {
+            favoriteURL.add("");
+        }
+        if (member.getCal_favorite3()!=null) {
+            favoriteURL.add(member.getCal_favorite3());
+        }else {
+            favoriteURL.add("");
+        }
+        if (member.getCal_favorite4()!=null) {
+            favoriteURL.add(member.getCal_favorite4());
+        }else {
+            favoriteURL.add("");
+        }
+        if (member.getCal_favorite5()!=null) {
+            favoriteURL.add(member.getCal_favorite5());
         }else {
             favoriteURL.add("");
         }
@@ -615,6 +655,165 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public ArrayList<String> extractCalUrl(String str) {
+        ArrayList<String> arr = new ArrayList<>();
+
+        String keyword1 = "query1=";
+        String keyword2 = "&query2=";
+        String keyword3 = "&query3=";
+        String keyword4 = "&query4=";
+        String keyword5 = "&query5=";
+        String keyword6 = "&year=";
+        String keyword7 = "&month=";
+        String keyword8 = "&day=";
+        String keyword9 = "&year2=";
+        String keyword10 = "&month2=";
+        String keyword11 = "&day2=";
+        String keyword12 = "&select_day_week_month=";
+        String keyword13 = "&device=";
+        String keyword14 = "&gender=";
+        String keyword15 = "&age=";
+
+        String regexPattern1 = keyword1 + "(.*?)" + keyword2;
+        String regexPattern2 = keyword2 + "(.*?)" + keyword3;
+        String regexPattern3 = keyword3 + "(.*?)" + keyword4;
+        String regexPattern4 = keyword4 + "(.*?)" + keyword5;
+        String regexPattern5 = keyword5 + "(.*?)" + keyword6;
+        String regexPattern6 = keyword6 + "(.*?)" + keyword7;
+        String regexPattern7 = keyword7 + "(.*?)" + keyword8;
+        String regexPattern8 = keyword8 + "(.*?)" + keyword9;
+        String regexPattern9 = keyword9 + "(.*?)" + keyword10;
+        String regexPattern10 = keyword10 + "(.*?)" + keyword11;
+        String regexPattern11 = keyword11 + "(.*?)" + keyword12;
+        String regexPattern12 = keyword12 + "(.*?)" + keyword13;
+        String regexPattern13 = keyword13 + "(.*?)" + keyword14;
+        String regexPattern14 = keyword14 + "(.*?)" + keyword15;
+
+        Pattern pattern1 = Pattern.compile(regexPattern1);
+        Pattern pattern2 = Pattern.compile(regexPattern2);
+        Pattern pattern3 = Pattern.compile(regexPattern3);
+        Pattern pattern4 = Pattern.compile(regexPattern4);
+        Pattern pattern5 = Pattern.compile(regexPattern5);
+        Pattern pattern6 = Pattern.compile(regexPattern6);
+        Pattern pattern7 = Pattern.compile(regexPattern7);
+        Pattern pattern8 = Pattern.compile(regexPattern8);
+        Pattern pattern9 = Pattern.compile(regexPattern9);
+        Pattern pattern10 = Pattern.compile(regexPattern10);
+        Pattern pattern11 = Pattern.compile(regexPattern11);
+        Pattern pattern12 = Pattern.compile(regexPattern12);
+        Pattern pattern13 = Pattern.compile(regexPattern13);
+        Pattern pattern14 = Pattern.compile(regexPattern14);
+
+        Matcher matcher1 = pattern1.matcher(str);
+        Matcher matcher2 = pattern2.matcher(str);
+        Matcher matcher3 = pattern3.matcher(str);
+        Matcher matcher4 = pattern4.matcher(str);
+        Matcher matcher5 = pattern5.matcher(str);
+        Matcher matcher6 = pattern6.matcher(str);
+        Matcher matcher7 = pattern7.matcher(str);
+        Matcher matcher8 = pattern8.matcher(str);
+        Matcher matcher9 = pattern9.matcher(str);
+        Matcher matcher10 = pattern10.matcher(str);
+        Matcher matcher11 = pattern11.matcher(str);
+        Matcher matcher12 = pattern12.matcher(str);
+        Matcher matcher13 = pattern13.matcher(str);
+        Matcher matcher14 = pattern14.matcher(str);
+
+        while (matcher1.find()) {
+            String extractedContent = matcher1.group(1);
+            arr.add(extractedContent);
+        }
+        while (matcher2.find()) {
+            String extractedContent = matcher2.group(1);
+            if (extractedContent.equals("")){
+                arr.add(null);
+            }else {
+                arr.add(extractedContent);
+            }
+        }
+        while (matcher3.find()) {
+            String extractedContent = matcher3.group(1);
+            if (extractedContent.equals("")){
+                arr.add(null);
+            }else {
+                arr.add(extractedContent);
+            }
+        }
+        while (matcher4.find()) {
+            String extractedContent = matcher4.group(1);
+            if (extractedContent.equals("")){
+                arr.add(null);
+            }else {
+                arr.add(extractedContent);
+            }
+        }
+        while (matcher5.find()) {
+            String extractedContent = matcher5.group(1);
+            if (extractedContent.equals("")){
+                arr.add(null);
+            }else {
+                arr.add(extractedContent);
+            }
+        }
+        while (matcher6.find()) {
+            String extractedContent = matcher6.group(1);
+            arr.add(extractedContent);
+        }
+        while (matcher7.find()) {
+            String extractedContent = matcher7.group(1);
+            arr.add(extractedContent);
+        }
+        while (matcher8.find()) {
+            String extractedContent = matcher8.group(1);
+            arr.add(extractedContent);
+        }
+        while (matcher9.find()) {
+            String extractedContent = matcher9.group(1);
+            arr.add(extractedContent);
+        }
+        while (matcher10.find()) {
+            String extractedContent = matcher10.group(1);
+            arr.add(extractedContent);
+        }
+        while (matcher11.find()) {
+            String extractedContent = matcher11.group(1);
+            arr.add(extractedContent);
+        }
+        while (matcher12.find()) {
+            String extractedContent = matcher12.group(1);
+            if (extractedContent.equals("date")){
+                arr.add("일간");
+            } else if (extractedContent.equals("week")) {
+                arr.add("주간");
+            } else if (extractedContent.equals("month")) {
+                arr.add("월간");
+            }
+        }
+        while (matcher13.find()) {
+            String extractedContent = matcher13.group(1);
+            if (extractedContent.equals("")){
+                arr.add("전체");
+            } else if (extractedContent.equals("mo")) {
+                arr.add("모바일");
+            } else if (extractedContent.equals("pc")) {
+                arr.add("PC");
+            }
+        }
+        while (matcher14.find()) {
+            String extractedContent = matcher14.group(1);
+            if (extractedContent.equals("")){
+                arr.add("전체");
+            } else if (extractedContent.equals("f")) {
+                arr.add("여성");
+            } else if (extractedContent.equals("m")) {
+                arr.add("남성");
+            }
+        }
+
+        return arr;
+    }
+
+    @Override
     public boolean setRemoveAllUrl(String username) {
         Optional<Member> optionalMember = memberRepository.findById(username);
 
@@ -690,6 +889,88 @@ public class MemberServiceImpl implements MemberService {
         Member member = optionalMember.get();
 
         member.setFavorite5(null);
+
+        memberRepository.save(member);
+
+        return true;
+    }
+
+    @Override
+    public boolean setRemoveAllCalUrl(String username) {
+        Optional<Member> optionalMember = memberRepository.findById(username);
+
+        Member member = optionalMember.get();
+
+        member.setCal_favorite1(null);
+        member.setCal_favorite2(null);
+        member.setCal_favorite3(null);
+        member.setCal_favorite4(null);
+        member.setCal_favorite5(null);
+
+        memberRepository.save(member);
+
+        return true;
+    }
+
+    @Override
+    public boolean setRemoveCalUrl1(String username) {
+        Optional<Member> optionalMember = memberRepository.findById(username);
+
+        Member member = optionalMember.get();
+
+        member.setCal_favorite1(null);
+
+        memberRepository.save(member);
+
+        return true;
+    }
+
+    @Override
+    public boolean setRemoveCalUrl2(String username) {
+        Optional<Member> optionalMember = memberRepository.findById(username);
+
+        Member member = optionalMember.get();
+
+        member.setCal_favorite2(null);
+
+        memberRepository.save(member);
+
+        return true;
+    }
+
+    @Override
+    public boolean setRemoveCalUrl3(String username) {
+        Optional<Member> optionalMember = memberRepository.findById(username);
+
+        Member member = optionalMember.get();
+
+        member.setCal_favorite3(null);
+
+        memberRepository.save(member);
+
+        return true;
+    }
+
+    @Override
+    public boolean setRemoveCalUrl4(String username) {
+        Optional<Member> optionalMember = memberRepository.findById(username);
+
+        Member member = optionalMember.get();
+
+        member.setCal_favorite4(null);
+
+        memberRepository.save(member);
+
+        return true;
+    }
+
+    @Override
+    public boolean setRemoveCalUrl5(String username) {
+        Optional<Member> optionalMember = memberRepository.findById(username);
+
+        Member member = optionalMember.get();
+
+        member.setCal_favorite5(null);
 
         memberRepository.save(member);
 
