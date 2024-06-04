@@ -32,6 +32,25 @@
   <!-- responsive style -->
   <link href="/css/responsive.css" rel="stylesheet" />
 
+  <style>
+    #scrollToTopBtn {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #6c757d;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    #scrollToTopBtn:hover {
+      background-color: #555;
+    }
+  </style>
 </head>
 
 <body>
@@ -48,7 +67,7 @@
     <div th:insert="~{/fragments/sliderFragment :: sliderFragment}"></div>
   </div>
 
-
+  <button id="scrollToTopBtn">▲</button>
 
   <div th:insert="~{/fragments/AnalysisFragment :: serviceFragment}"></div>
 
@@ -78,6 +97,26 @@
   </script>
   <!-- End Google Map -->
 
+  <script>
+    window.onscroll = function() {
+      scrollFunction();
+    };
+
+    function scrollFunction() {
+      const btn = document.getElementById("scrollToTopBtn");
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        btn.style.display = "block";
+      } else {
+        btn.style.display = "none";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById("scrollToTopBtn").addEventListener("click", function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+  </script>
 </body>
 
 </html>

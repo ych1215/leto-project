@@ -45,57 +45,59 @@
     <!--    anyChart -->
     <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script>
     <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-tag-cloud.min.js"></script>
-
-
     <style>
         #container {
             width: 800px;
             height: 800px;
             margin: 0;
             padding: 0;
-            position: center;
         }
-
         #img {
             margin-top: 50px;
         }
-
-        .w-btn-outline {
-            /*width: 100px;*/
-            /*height: 30px;*/
-            position: relative;
-            padding: 15px 30px;
-            border-radius: 15px;
-            font-family: "paybooc-Light", sans-serif;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        h1 {
+            font-weight: bold;
+        }
+        h1 span {
+            color: #00bbf0;
+        }
+        .custom-btn {
+            display: inline-block;
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            color: #000000;
+            padding: 10px 20px 8px 20px;
+            background-color: #d8dbdf; /* 버튼의 기본 배경색 (회색) */
+            border: 2px solid #b3b7bb;
+            border-radius: 5px; /* 둥근 모서리 */
+            cursor: pointer; /* 마우스 포인터 모양 변경 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+            font-weight: bold; /* 폰트 굵기 조정 */
+            transition: background-color 0.3s, transform 0.3s; /* 배경색과 크기 변화 트랜지션 */
             text-decoration: none;
-            font-weight: 600;
-            transition: 0.25s;
         }
-
-        .w-btn-red-outline {
-            border: 3px solid #ff5f2e;
-            color: #6e6e6e;
+        .custom-btn:hover {
+            background-color: #b3b7bb; /* 조금 더 짙은 회색 */
+            transform: translateY(-2px);
         }
-
-        .w-btn-red-outline:hover {
-            background-color: #ff5f2e;
-            color: #e1eef6;
-            cursor: pointer;
+        .custom-btn:active {
+            background-color: #545b62; /* 조금 더 짙은 회색 */
+            transform: translateY(-2px);
         }
-
-        #txt {
-            width: 200px;
-            height: 32px;
-            font-size: 15px;
-            border: 0;
-            border-radius: 15px;
-            outline: none;
-            padding-left: 10px;
-            background-color: rgb(233, 233, 233);
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            font-size: 16px;
         }
-
-
+        /* Select box 스타일 */
+        select {
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
     </style>
 
     <script>
@@ -194,7 +196,6 @@
                     // 2. anyChart 사용 => t : value
                     var chart = anychart.tagCloud(data);
 
-                    chart.title("My Word Cloud");
                     chart.container("container");
 
                     chart.hovered().fill("#8711c3");
@@ -204,6 +205,8 @@
                     chart.angles([0]);
 
                     chart.draw();
+
+
                 },
                 // 에러가 발생하면 - 대체적으로 백엔드에서 null 값이 return 되는 경우 - 경고창
                 error: function () {
@@ -232,15 +235,21 @@
 </div>
 
 <center>
+    <br><br>
+    <h1>
+        워드 <span>클라우드</span>
+    </h1>
+    <br>
+    <p>LETO Trends는 네이버 블로그를 크롤링하여 워드 클라우드 서비스를 제공하고 있습니다.</p>
+    <input type="text" placeholder="검색어 입력" name="" id="txt">
+    <input type="button" class="custom-btn" id="search" value="검색">
     <div id="div">
-        <img src="images/wordcloudImg/search.jpg" id="img">
+        <img src="images/wordcloudImg/search.png" id="img">
         <div id="container" align="center"></div>
     </div>
-
-    <input type="text" name="" id="txt">
-    <!--<input type="button" value="검색" id="search">-->
-    <input type="button" class="w-btn-outline w-btn-red-outline" id="search" value="검색">
+    <br>
 </center>
+<br><br>
 
 <div th:insert="~{/fragments/bottomFragment :: bottomFragment}"></div>
 

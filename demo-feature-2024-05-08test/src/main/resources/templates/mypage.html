@@ -23,7 +23,7 @@
 
     <!--owl slider stylesheet -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!-- font awesome style -->
     <link href="/css/font-awesome.min.css" rel="stylesheet" />
 
@@ -31,7 +31,28 @@
     <link href="/css/style.css" rel="stylesheet" />
     <!-- responsive style -->
     <link href="/css/responsive.css" rel="stylesheet" />
-
+    <style>
+        h3 {
+            font-weight: bold;
+        }
+        .input-group {
+            height: 40px;
+        }
+        .input-group span {
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        .input-group i {
+            width: 40px; /* 아이콘 칸의 너비를 고정합니다. */
+            text-align: center; /* 아이콘을 가운데 정렬합니다. */
+        }
+        .input-group a:hover {
+            text-decoration: underline;
+        }
+        .input-container-mypage {
+        }
+    </style>
 </head>
 
 <body class="sub_page">
@@ -55,11 +76,26 @@
                     My<span>Page</span>
                 </h1>
                 <br>
-                <div>회원정보 </div>
-                <span> 아이디 : <span th:text="${username}"></span></span>
-                <span> 전화번호 : <span th:text="${phone}"></span><a href="changePhone"> 수정</a></span>
-                <span> 이름 : <span th:text="${name}"></span><a href="changeName"> 수정</a></span>
-                <span><a href="changePwd">비밀번호  초기화</a></span>
+                <div th:text="${errorMessage}"></div>
+                <div class="input-container-mypage">
+                    <h3>회원 정보</h3>
+                    <div class="input-group">
+                        <i class="fas fa-user" title="아이디"></i>
+                        <span>&nbsp&nbsp<span th:text="${username}"></span></span>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-phone" title="전화번호"></i>
+                        <span>&nbsp&nbsp<span th:text="${phone}"></span>&nbsp&nbsp<a href="changePhone">수정</a></span>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-id-card" title="이름"></i>
+                        <span>&nbsp&nbsp<span th:text="${name}"></span>&nbsp&nbsp<a href="changeName">수정</a></span>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock" title="비밀번호"></i>
+                        <span>&nbsp&nbsp<span><a href="changePwd">비밀번호 초기화</a></span></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

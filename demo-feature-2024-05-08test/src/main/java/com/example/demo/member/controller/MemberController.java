@@ -158,8 +158,8 @@ public class MemberController {
 
     @PostMapping("/changeName")
     public String changeNamePost(Principal principal,
-                             @RequestParam(name = "name", required = false, defaultValue = "") String name,
-                             Model model){
+                                 @RequestParam(name = "name", required = false, defaultValue = "") String name,
+                                 Model model){
         String username = principal.getName();
         String user_name = memberService.getName(username);
 
@@ -175,7 +175,7 @@ public class MemberController {
 
     @GetMapping("/changePhone")
     public String changePhone(Principal principal,
-                           Model model){
+                              Model model){
         String username = principal.getName();
         String phone = memberService.getPhone(username);
         model.addAttribute("username", username);
@@ -960,13 +960,13 @@ public class MemberController {
 
     @PostMapping("/calendarFavoriteUrl")
     public String calendarFavoriteUrl(@RequestParam(name = "removeAllUrl", required = false, defaultValue = "") String removeAllUrl,
-                                @RequestParam(name = "removeUrl1", required = false, defaultValue = "") String removeUrl1,
-                                @RequestParam(name = "removeUrl2", required = false, defaultValue = "") String removeUrl2,
-                                @RequestParam(name = "removeUrl3", required = false, defaultValue = "") String removeUrl3,
-                                @RequestParam(name = "removeUrl4", required = false, defaultValue = "") String removeUrl4,
-                                @RequestParam(name = "removeUrl5", required = false, defaultValue = "") String removeUrl5,
-                                Model model,
-                                Principal principal) throws JSONException {
+                                      @RequestParam(name = "removeUrl1", required = false, defaultValue = "") String removeUrl1,
+                                      @RequestParam(name = "removeUrl2", required = false, defaultValue = "") String removeUrl2,
+                                      @RequestParam(name = "removeUrl3", required = false, defaultValue = "") String removeUrl3,
+                                      @RequestParam(name = "removeUrl4", required = false, defaultValue = "") String removeUrl4,
+                                      @RequestParam(name = "removeUrl5", required = false, defaultValue = "") String removeUrl5,
+                                      Model model,
+                                      Principal principal) throws JSONException {
         String userName = principal.getName();
         model.addAttribute("username", userName);
 

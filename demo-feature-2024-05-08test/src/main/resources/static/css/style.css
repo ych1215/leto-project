@@ -23,7 +23,6 @@ body {
 }
 
 .layout_padding-top {
-  padding-top: 90px;
 }
 
 .layout_padding-bottom {
@@ -305,28 +304,37 @@ a:focus {
   display: -ms-flexbox;
   display: flex;
   margin: 0 -5px;
-  margin-top: 25px;
+  margin-top: 0px;
 }
 
 .slider_section .detail-box .btn-box a {
   margin: 5px;
   text-align: center;
-  width: 165px;
+  align-items: center;
+  align-self: center;
+  width: 230px;
+}
+
+.slider_section .detail-box .btn-box1 a {
+  margin: 5px;
+  text-align: center;
+  align-items: center;
+  align-self: center;
+  width: 230px;
 }
 
 .slider_section .detail-box .btn-box .btn1 {
   display: inline-block;
   padding: 10px 15px;
-  background-color: #00bbf0;
+  border: 3px solid #f2f2f2;
+  border-radius: 5px; /* 기본 버튼의 모서리를 둥글게 설정 */
   color: #ffffff;
-  border-radius: 0;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
-  border: none;
 }
 
 .slider_section .detail-box .btn-box .btn1:hover {
-  background-color: #007fa4;
+  border-image: linear-gradient(to right, #fbfcb9, #ffcdf3, #65d3ff) 1;
 }
 
 .slider_section .detail-box .btn-box .btn2 {
@@ -456,7 +464,6 @@ a:focus {
   align-items: center;
   text-align: center;
   margin-top: 45px;
-  background-color: #f8f8f9;
   padding: 20px;
   border-radius: 5px;
 }
@@ -638,6 +645,15 @@ a:focus {
 
 .why_section .btn-box a:hover {
   background-color: #007fa4;
+}
+
+.why_container .detail-box li {
+  text-align: left;
+}
+
+.why_container .detail-box p {
+  text-align: left;
+  font-weight: bold;
 }
 
 /*team section */

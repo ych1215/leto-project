@@ -32,43 +32,78 @@
   <!-- responsive style -->
   <link href="/css/responsive.css" rel="stylesheet" />
 
+  <style>
+    #scrollToTopBtn {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #6c757d;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    #scrollToTopBtn:hover {
+      background-color: #555;
+    }
+  </style>
 </head>
 
 <body>
-
-  <div class="hero_area">
-
-    <div class="hero_bg_box">
-      <div class="bg_img_box">
-        <img src="/images/hero-bg.png" alt="">
-      </div>
+<div class="hero_area">
+  <div class="hero_bg_box">
+    <div class="bg_img_box">
+      <img src="/images/hero-bg.png" alt="">
     </div>
-    <div th:insert="~{/fragments/topBeforeFragment :: topBeforeFragment}"></div>
-    <div th:insert="~{/fragments/sliderFragment :: sliderFragment}"></div>
   </div>
+  <div th:insert="~{/fragments/topBeforeFragment :: topBeforeFragment}"></div>
+  <div th:insert="~{/fragments/sliderFragment :: sliderFragment}"></div>
+</div>
+<button id="scrollToTopBtn">▲</button>
+<div th:insert="~{/fragments/AnalysisFragment :: serviceFragment}"></div>
+<div th:insert="~{/fragments/aboutFragment :: aboutFragment}"></div>
+<div th:insert="~{/fragments/manualFragment :: manualFragment}"></div>
+<div th:insert="~{/fragments/teamFragment :: teamFragment}"></div>
+<div th:insert="~{/fragments/bottomBeforeFragment :: bottomBeforeFragment}"></div>
 
-  <div th:insert="~{/fragments/aboutFragment :: aboutFragment}"></div>
-  <div th:insert="~{/fragments/manualFragment :: manualFragment}"></div>
-  <div th:insert="~{/fragments/teamFragment :: teamFragment}"></div>
-  <div th:insert="~{/fragments/bottomBeforeFragment :: bottomBeforeFragment}"></div>
+<!-- jQery -->
+<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<!-- popper js -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<!-- bootstrap js -->
+<script type="text/javascript" src="/js/bootstrap.js"></script>
+<!-- owl slider -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<!-- custom js -->
+<script type="text/javascript" src="/js/custom.js"></script>
+<!-- Google Map -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap"></script>
+<!-- End Google Map -->
 
-  <!-- jQery -->
-  <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-  <!-- popper js -->
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-  </script>
-  <!-- bootstrap js -->
-  <script type="text/javascript" src="/js/bootstrap.js"></script>
-  <!-- owl slider -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
-  </script>
-  <!-- custom js -->
-  <script type="text/javascript" src="/js/custom.js"></script>
-  <!-- Google Map -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
-  </script>
-  <!-- End Google Map -->
+<script>
+  window.onscroll = function() {
+    scrollFunction();
+  };
 
+  function scrollFunction() {
+    const btn = document.getElementById("scrollToTopBtn");
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+      btn.style.display = "block";
+    } else {
+      btn.style.display = "none";
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("scrollToTopBtn").addEventListener("click", function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+</script>
 </body>
 
 </html>

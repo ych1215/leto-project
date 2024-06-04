@@ -41,7 +41,7 @@
             color: #000000;
             padding: 10px 20px;
             background-color: #d8dbdf; /* 버튼의 기본 배경색 (회색) */
-            border: none; /* 테두리 제거 */
+            border: 2px solid #b3b7bb;
             border-radius: 5px; /* 둥근 모서리 */
             cursor: pointer; /* 마우스 포인터 모양 변경 */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
@@ -49,6 +49,7 @@
             transition: background-color 0.3s, transform 0.3s; /* 배경색과 크기 변화 트랜지션 */
             text-decoration: none;
             margin: 5px;
+            text-align: left;
         }
         .custom-btn:hover {
             background-color: #b3b7bb; /* 조금 더 짙은 회색 */
@@ -64,7 +65,6 @@
             color: #333;
             line-height: 1.6;
         }
-
         .favorite-container strong {
             font-weight: bold;
             color: #000;
@@ -88,17 +88,14 @@
             font-weight: bold; /* 폰트 굵기 조정 */
             transition: background-color 0.3s, transform 0.3s; /* 배경색과 크기 변화 트랜지션 */
         }
-
         .fixed-button:hover {
             background-color: #5a6268; /* 호버 시 배경색 (더 어두운 회색) */
             transform: translateY(-2px); /* 호버 시 약간 위로 이동 */
         }
-
         .fixed-button:active {
             background-color: #545b62; /* 클릭 시 배경색 (더 어두운 회색) */
             transform: translateY(1px); /* 클릭 시 약간 아래로 이동 */
         }
-
         .fixed-button:focus {
             outline: none; /* 포커스 시 기본 테두리 제거 */
             box-shadow: 0 0 0 3px rgba(108, 117, 125, 0.5); /* 포커스 시 테두리 그림자 */

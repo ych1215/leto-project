@@ -1057,4 +1057,3 @@ public class MemberServiceImpl implements MemberService {
         return new User(member.getUserId(), member.getPassword(), grantedAuthorities);
     }
 }
-

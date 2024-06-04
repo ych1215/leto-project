@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 
 <head>
     <!-- Basic -->
@@ -13,7 +13,7 @@
     <meta name="author" content="" />
     <link rel="shortcut icon" href="/images/Logo.png" type="">
 
-    <title> LETO Trends </title>
+    <title>LETO Trends</title>
 
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.css" />
@@ -31,7 +31,67 @@
     <link href="/css/style.css" rel="stylesheet" />
     <!-- responsive style -->
     <link href="/css/responsive.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        input[type="text"] {
+            font-size: 16px;
+        }
 
+        .heading_container {
+            padding-top: 50px;
+            padding-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group span {
+            font-weight: bold;
+        }
+
+        .input-group i {
+            width: 40px; /* 아이콘 칸의 너비를 고정합니다. */
+            text-align: center; /* 아이콘을 가운데 정렬합니다. */
+            display: flex; /* 아이콘을 수직 방향으로 정렬하기 위해 flex를 사용합니다. */
+            justify-content: center; /* 수직 방향으로 가운데 정렬합니다. */
+            align-items: center; /* 가로 방향으로 가운데 정렬합니다. */
+        }
+
+        .input-group input[type="text"] {
+            width: calc(100% - 40px);
+        }
+        .input-group span {
+            display: flex;
+            align-items: center;
+        }
+        .custom-btn {
+            display: inline-block;
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            color: #000000;
+            padding: 7px 14px;
+            background-color: #d8dbdf; /* 버튼의 기본 배경색 (회색) */
+            border: 2px solid #b3b7bb;
+            border-radius: 5px; /* 둥근 모서리 */
+            cursor: pointer; /* 마우스 포인터 모양 변경 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+            font-weight: bold; /* 폰트 굵기 조정 */
+            transition: background-color 0.3s, transform 0.3s; /* 배경색과 크기 변화 트랜지션 */
+            text-decoration: none;
+        }
+        .custom-btn:hover {
+            background-color: #b3b7bb; /* 조금 더 짙은 회색 */
+            transform: translateY(-2px);
+        }
+        .custom-btn:active {
+            background-color: #545b62; /* 조금 더 짙은 회색 */
+            transform: translateY(-2px);
+        }
+        #successMessage {
+            display: none;
+        }
+    </style>
 </head>
 
 <body class="sub_page">
@@ -46,11 +106,38 @@
 
     <div th:insert="~{/fragments/topFragment :: topFragment}"></div>
 </div>
-<span> 기존 전화번호 : <span th:text="${phone}"></span></span>
-<form method="post">
-    <span>변경할 전화번호 : <input name="phone" type="text"><button type="submit">수정</button></span>
-</form>
 
+<!-- Service Section -->
+<section class="service_section layout_padding">
+    <div class="service_container">
+        <div class="container">
+            <div class="heading_container heading_center">
+                <h1>
+                    전화번호<span> 변경</span>
+                </h1>
+                <br>
+                <div th:text="${errorMessage}"></div>
+                <div th:if="${successMessage}" th:text="${successMessage}" id="successMessage"></div>
+                <form method="post" th:action="@{/changePhone}">
+                    <div class="input-container-changeName">
+                        <div class="input-group">
+                            <i class="fas fa-user"></i>
+                            <span>&nbsp&nbsp 기존 전화번호 : &nbsp<span th:text="${phone}"></span>&nbsp&nbsp&nbsp</span>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-phone"></i>
+                            <span><input name="phone" placeholder="새 전화번호 입력" type="text"></span>
+                        </div>
+                        <div>
+                            <button class="custom-btn" type="submit">수정</button>
+                            <button class="custom-btn" type="button" onclick="window.location.href='/mypage'">마이페이지로</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
 
 <div th:insert="~{/fragments/bottomFragment :: bottomFragment}"></div>
 
@@ -70,7 +157,14 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
 </script>
 <!-- End Google Map -->
-
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var successMessage = document.getElementById("successMessage");
+        if (successMessage && successMessage.textContent.trim() !== "") {
+            alert(successMessage.textContent);
+        }
+    });
+</script>
 </body>
 
 </html>

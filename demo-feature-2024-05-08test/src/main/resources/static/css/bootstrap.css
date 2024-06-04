@@ -2437,6 +2437,24 @@ textarea.form-control {
   text-align: center;
 }
 
+.input-container-mypage {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.input-container-changeName {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
 .input-group {
   display: flex;
   align-items: center;

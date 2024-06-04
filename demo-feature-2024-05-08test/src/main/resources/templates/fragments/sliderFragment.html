@@ -6,15 +6,21 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
 </head>
 <body>
-<section class="slider_section " th:fragment="sliderFragment">
+<section class="slider_section" th:fragment="sliderFragment">
     <div id="customCarousel1" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <div class="container ">
+                <div class="container">
                     <div class="row">
-                        <div class="col-md-6 ">
+                        <div class="col-md-6">
                             <div class="detail-box">
                                 <h1>
                                     검색어 트렌드 비교분석
@@ -22,16 +28,20 @@
                                 <p>
                                     LETO Trends는 네이버 통합검색에서 발생하는 검색어의 트렌드에 대한 더욱 다양한 인사이트를 여러분께 제공합니다.
                                 </p>
-                                <div class="btn-box">
-                                    <a href="index_result" class="btn1">
-                                        차트 비교분석<br>바로가기
-                                    </a>
-                                    <a href="wordcloud" class="btn1">
-                                        워드클라우드 <br>바로가기
-                                    </a>
-                                    <a href="calendar" class="btn1">
-                                        캘린더 비교분석<br>바로가기
-                                    </a>
+                                <div class="btn-container">
+                                    <div class="btn-box">
+                                        <a href="index_result" class="btn1">
+                                            차트 비교분석 바로가기
+                                        </a>
+                                        <a href="wordcloud" class="btn1">
+                                            워드 클라우드 바로가기
+                                        </a>
+                                    </div>
+                                    <div class="btn-box">
+                                        <a href="calendar" class="btn1">
+                                            히트맵 캘린더 바로가기
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -49,14 +59,19 @@
                         <div class="col-md-6 ">
                             <div class="detail-box">
                                 <h1>
-                                    2개의 차트로 트렌드를 <br>비교분석
+                                    2개의 차트로 <br>트렌드를 비교분석
                                 </h1>
                                 <p>
                                     각 검색 기간과 원하는 검색 조건을 지정해 두 차트를 비교할 수 있습니다.
                                 </p>
                                 <div class="btn-box">
                                     <a href="index_result" class="btn1">
-                                        차트 비교분석<br>바로가기
+                                        차트 비교분석 바로가기
+                                    </a>
+                                </div>
+                                <div class="btn-box">
+                                    <a href="favorite_url" class="btn1">
+                                        즐겨찾기 바로가기
                                     </a>
                                 </div>
                             </div>
@@ -75,14 +90,14 @@
                         <div class="col-md-6 ">
                             <div class="detail-box">
                                 <h1>
-                                    워드클라우드
+                                    워드 클라우드
                                 </h1>
                                 <p>
-                                    검색어 트렌드를 워드클라우드를 통해 한눈에 비교분석할 수 있습니다.
+                                    검색어 트렌드를 워드 클라우드를 통해 한눈에 비교분석할 수 있습니다.
                                 </p>
                                 <div class="btn-box">
                                     <a href="wordcloud" class="btn1">
-                                        워드클라우드<br> 바로가기
+                                        워드 클라우드 바로가기
                                     </a>
                                 </div>
                             </div>
@@ -95,11 +110,43 @@
                     </div>
                 </div>
             </div>
+            <div class="carousel-item">
+                <div class="container ">
+                    <div class="row">
+                        <div class="col-md-6 ">
+                            <div class="detail-box">
+                                <h1>
+                                    히트맵 캘린더
+                                </h1>
+                                <p>
+                                    히트맵 캘린더를 통해 검색 추이를 확인할 수 있습니다.
+                                </p>
+                                <div class="btn-box">
+                                    <a href="calendar" class="btn1">
+                                        히트맵 캘린더 바로가기
+                                    </a>
+                                </div>
+                                <div class="btn-box">
+                                    <a href="calendarFavoriteUrl" class="btn1">
+                                        즐겨찾기 바로가기
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="img-box">
+                                <img src="/images/slider-img4.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <ol class="carousel-indicators">
             <li data-target="#customCarousel1" data-slide-to="0" class="active"></li>
             <li data-target="#customCarousel1" data-slide-to="1"></li>
             <li data-target="#customCarousel1" data-slide-to="2"></li>
+            <li data-target="#customCarousel1" data-slide-to="3"></li>
         </ol>
     </div>
 
