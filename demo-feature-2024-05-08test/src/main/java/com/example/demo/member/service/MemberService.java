@@ -73,6 +73,9 @@ public interface MemberService extends UserDetailsService {
     boolean setRemoveCalUrl5(String username);
 
     ArrayList<String> getAge1(String str);
+
+    ArrayList<String> getAge(String str);
+
     ArrayList<String> getAge2(String str);
 
     boolean changeName(String name, String username);

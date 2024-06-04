@@ -809,7 +809,7 @@ public class MemberController {
         for (int i = 0; i < memberService.getDbCalFavoriteURL(userName).size(); i++) {
             favoriteURL = memberService.getDbCalFavoriteURL(userName).get(i);
             ArrayList<String> arrayList = memberService.extractCalUrl(favoriteURL);
-            ArrayList<String> arrayList2 = memberService.getAge1(favoriteURL);
+            ArrayList<String> arrayList2 = memberService.getAge(favoriteURL);
 
             if (arrayList2.size()==0){
                 arrayList2.add("전체");
@@ -1000,7 +1000,7 @@ public class MemberController {
         for (int i = 0; i < memberService.getDbCalFavoriteURL(userName).size(); i++) {
             favoriteURL = memberService.getDbCalFavoriteURL(userName).get(i);
             ArrayList<String> arrayList = memberService.extractCalUrl(favoriteURL);
-            ArrayList<String> arrayList2 = memberService.getAge1(favoriteURL);
+            ArrayList<String> arrayList2 = memberService.getAge(favoriteURL);
 
             if (arrayList2.size()==0){
                 arrayList2.add("전체");

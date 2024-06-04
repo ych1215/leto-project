@@ -986,11 +986,27 @@ public class MemberServiceImpl implements MemberService {
         arr = str.split("&age=");
         arr3 = arr[arr.length-1].split("&year3=");
 
-        for (int i = 1; i < arr.length-1; i++) {
-            arrayList.add(arr[i]);
-            if (i==arr.length-2){
+        for (int i = 1; i < arr.length; i++) {
+            if (i!=arr.length-1){
+                arrayList.add(arr[i]);
+            }else {
                 arrayList.add(arr3[0]);
             }
+        }
+        return arrayList;
+    }
+
+    @Override
+    public ArrayList<String> getAge(String str) {
+        String[] arr = new String[13];
+        String[] arr3 = new String[13];
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        arr = str.split("&age=");
+        arr3 = arr[arr.length-1].split("&year3=");
+
+        for (int i = 1; i < arr.length; i++) {
+            arrayList.add(arr[i]);
         }
         return arrayList;
     }
