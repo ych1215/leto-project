@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <!-- Basic -->
@@ -150,7 +150,7 @@
                             단위 : <strong><span th:text="${url1select_day_week_month}"></span></strong>,
                             범위 : <strong><span th:text="${url1device}"></span></strong>,
                             성별 : <strong><span th:text="${url1gender}"></span></strong>,
-                            연령 : <strong><span th:each="url1age1 : ${url1age1}"><span th:text="${url1age1}"></span>,</span></strong><br>
+                            연령 : <strong><span th:each="url1age1, url1age1State : ${url1age1}"><span th:text="${url1age1}"></span><span th:if="${url1age1State.index lt (url1age1State.size)-1}">,</span></span></span></strong><br>
                     </button>
                     <form action="/calendarFavoriteUrl" method="post" style="display:inline;">
                         <button class="custom-btn" type="submit" name="removeUrl1" value="1">삭제</button>
@@ -168,7 +168,7 @@
                             단위 : <strong><span th:text="${url2select_day_week_month}"></span></strong>,
                             범위 : <strong><span th:text="${url2device}"></span></strong>,
                             성별 : <strong><span th:text="${url2gender}"></span></strong>,
-                            연령 : <strong><span th:each="url2age1 : ${url2age1}"><span th:text="${url2age1}"></span>,</span></strong><br>
+                            연령 : <strong><span th:each="url2age1, url2age2State : ${url2age1}"><span th:text="${url2age1}"></span><span th:if="${url2age1State.index lt (url2age1State.size)-1}">,</span></span></span></strong><br>
                     </button>
                     <form action="/calendarFavoriteUrl" method="post" style="display:inline;">
                         <button class="custom-btn" type="submit" name="removeUrl2" value="2">삭제</button>
@@ -187,7 +187,7 @@
                             단위 : <strong><span th:text="${url3select_day_week_month}"></span></strong>,
                             범위 : <strong><span th:text="${url3device}"></span></strong>,
                             성별 : <strong><span th:text="${url3gender}"></span></strong>,
-                            연령 : <strong><span th:each="url3age1 : ${url3age1}"><span th:text="${url3age1}"></span>,</span></strong><br>
+                            연령 : <strong><span th:each="url3age1, url3age1State : ${url3age1}"><span th:text="${url3age1}"></span><span th:if="${url3age1State.index lt (url3age1State.size)-1}">,</span></span></span></strong><br>
                     </button>
                     <form action="/calendarFavoriteUrl" method="post" style="display:inline;">
                         <button class="custom-btn" type="submit" name="removeUrl3" value="3">삭제</button>
@@ -206,7 +206,7 @@
                             단위 : <strong><span th:text="${url4select_day_week_month}"></span></strong>,
                             범위 : <strong><span th:text="${url4device}"></span></strong>,
                             성별 : <strong><span th:text="${url4gender}"></span></strong>,
-                            연령 : <strong><span th:each="url4age1 : ${url4age1}"><span th:text="${url4age1}"></span>,</span></strong><br>
+                            연령 : <strong><span th:each="url4age1, url4age1State : ${url4age1}"><span th:text="${url4age1}"></span><span th:if="${url4age1State.index lt (url4age1State.size)-1}">,</span></span></span></strong><br>
                     </button>
                     <form action="/calendarFavoriteUrl" method="post" style="display:inline;">
                         <button class="custom-btn" type="submit" name="removeUrl4" value="4">삭제</button>
@@ -225,7 +225,7 @@
                             단위 : <strong><span th:text="${url5select_day_week_month}"></span></strong>,
                             범위 : <strong><span th:text="${url5device}"></span></strong>,
                             성별 : <strong><span th:text="${url5gender}"></span></strong>,
-                            연령 : <strong><span th:each="url5age1 : ${url5age1}"><span th:text="${url5age1}"></span>,</span></strong><br>
+                            연령 : <strong><span th:each="url5age1, url5age1State : ${url5age1}"><span th:text="${url5age1}"></span><span th:if="${url5age1State.index lt (url5age1State.size)-1}">,</span></span></strong><br>
                     </button>
                     <form action="/calendarFavoriteUrl" method="post" style="display:inline;">
                         <button class="custom-btn" type="submit" name="removeUrl5" value="5">삭제</button>

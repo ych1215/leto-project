@@ -147,12 +147,12 @@
                             단위 : <strong><span th:text="${url1select_day_week_month}"></span></strong>,
                             범위 : <strong><span th:text="${url1device}"></span></strong>,
                             성별 : <strong><span th:text="${url1gender}"></span></strong>,
-                            연령: <strong><span th:each="url1age1 : ${url1age1}"><span th:text="${url1age1}"></span>,</span></strong><br>
+                            연령: <strong><span th:each="url1age1, url1age1State : ${url1age1}"><span th:text="${url1age1}"></span><span th:if="${url1age1State.index lt (url1age1State.size)-1}">,</span></span></strong><br>
                             비교군2 기간: <strong><span th:text="${url1year3}"></span>-<span th:text="${url1month3}"></span>-<span th:text="${url1day3}"></span>~<span th:text="${url1year4}"></span>-<span th:text="${url1month4}"></span>-<span th:text="${url1day4}"></span></strong>,
                             단위 : <strong><span th:text="${url1select_day_week_month2}"></span></strong>,
                             범위 : <strong><span th:text="${url1device2}"></span></strong>,
                             성별 : <strong><span th:text="${url1gender2}"></span></strong>,
-                            연령: <strong><span th:each="url1age2 : ${url1age2}"><span th:text="${url1age2}"></span>,</span></strong></p>
+                            연령: <strong><span th:each="url1age2, url1age2State : ${url1age2}"><span th:text="${url1age2}"></span><span th:if="${url1age2State.index lt (url1age2State.size)-1}">,</span></span></strong></p>
                     </button>
                     <form action="/favorite_url" method="post" style="display:inline;">
                         <button class="custom-btn" type="submit" name="removeUrl1" value="1">삭제</button>
@@ -170,12 +170,12 @@
                             단위 : <strong><span th:text="${url2select_day_week_month}"></span></strong>,
                             범위 : <strong><span th:text="${url2device}"></span></strong>,
                             성별 : <strong><span th:text="${url2gender}"></span></strong>,
-                            연령: <strong><span th:each="url2age1 : ${url2age1}"><span th:text="${url2age1}"></span>,</span></strong><br>
+                            연령: <strong><span th:each="url2age1, url2age1State : ${url2age1}"><span th:text="${url2age1}"></span><span th:if="${url2age1State.index lt (url2age1State.size)-1}">,</span></span></strong><br>
                             비교군2 기간: <strong><span th:text="${url2year3}"></span>-<span th:text="${url2month3}"></span>-<span th:text="${url2day3}"></span>~<span th:text="${url2year4}"></span>-<span th:text="${url2month4}"></span>-<span th:text="${url2day4}"></span></strong>,
                             단위 : <strong><span th:text="${url2select_day_week_month2}"></span></strong>,
                             범위 : <strong><span th:text="${url2device2}"></span></strong>,
                             성별 : <strong><span th:text="${url2gender2}"></span></strong>,
-                            연령: <strong><span th:each="url2age2 : ${url2age2}"><span th:text="${url2age2}"></span>,</span></strong></p>
+                            연령: <strong><span th:each="url2age2, url2age2State : ${url2age2}"><span th:text="${url2age2}"></span><span th:if="${url2age2State.index lt (url2age2State.size)-1}">,</span></span></strong></p>
                     </button>
                     <form action="/favorite_url" method="post" style="display:inline;">
                         <button class="custom-btn" type="submit" name="removeUrl2" value="2">삭제</button>
@@ -194,12 +194,12 @@
                             단위 : <strong><span th:text="${url3select_day_week_month}"></span></strong>,
                             범위 : <strong><span th:text="${url3device}"></span></strong>,
                             성별 : <strong><span th:text="${url3gender}"></span></strong>,
-                            연령: <strong><span th:each="url3age1 : ${url3age1}"><span th:text="${url3age1}"></span>,</span></strong><br>
+                            연령: <strong><span th:each="url3age1 , url3age1State : ${url3age1}"><span th:text="${url3age1}"></span><span th:if="${url3age1State.size!=0}"><span th:if="${url3age1State.index lt (url3age1State.size)-1}">,</span></span></span></strong><br>
                             비교군2 기간: <strong><span th:text="${url3year3}"></span>-<span th:text="${url3month3}"></span>-<span th:text="${url3day3}"></span>~<span th:text="${url3year4}"></span>-<span th:text="${url3month4}"></span>-<span th:text="${url3day4}"></span></strong>,
                             단위 : <strong><span th:text="${url3select_day_week_month2}"></span></strong>,
                             범위 : <strong><span th:text="${url3device2}"></span></strong>,
                             성별 : <strong><span th:text="${url3gender2}"></span></strong>,
-                            연령: <strong><span th:each="url3age2 : ${url3age2}"><span th:text="${url3age2}"></span>,</span></strong></p>
+                            연령: <strong><span th:each="url3age2, url3age2State : ${url3age2}"><span th:text="${url3age2}"></span><span th:if="${url3age2State.index lt (url3age2State.size)-1}">,</span></span></strong></p>
                     </button>
                     <form action="/favorite_url" method="post" style="display:inline;">
                         <button class="custom-btn" type="submit" name="removeUrl3" value="3">삭제</button>
@@ -218,12 +218,12 @@
                             단위 : <strong><span th:text="${url4select_day_week_month}"></span></strong>,
                             범위 : <strong><span th:text="${url4device}"></span></strong>,
                             성별 : <strong><span th:text="${url4gender}"></span></strong>,
-                            연령: <strong><span th:each="url4age1 : ${url4age1}"><span th:text="${url4age1}"></span>,</span></strong><br>
+                            연령: <strong><span th:each="url4age1, url4age1State : ${url4age1}"><span th:text="${url4age1}"></span><span th:if="${url4age1State.index lt (url4age1State.size)-1}">,</span></span></strong><br>
                             비교군2 기간: <strong><span th:text="${url4year3}"></span>-<span th:text="${url4month3}"></span>-<span th:text="${url4day3}"></span>~<span th:text="${url4year4}"></span>-<span th:text="${url4month4}"></span>-<span th:text="${url4day4}"></span></strong>,
                             단위 : <strong><span th:text="${url4select_day_week_month2}"></span></strong>,
                             범위 : <strong><span th:text="${url4device2}"></span></strong>,
                             성별 : <strong><span th:text="${url4gender2}"></span></strong>,
-                            연령: <strong><span th:each="url4age2 : ${url4age2}"><span th:text="${url4age2}"></span>,</span></strong></p>
+                            연령: <strong><span th:each="url4age2, url4age2State : ${url4age2}"><span th:text="${url4age2}"></span><span th:if="${url4age2State.index lt (url4age2State.size)-1}">,</span></span></strong></p>
                     </button>
                     <form action="/favorite_url" method="post" style="display:inline;">
                         <button class="custom-btn" type="submit" name="removeUrl4" value="4">삭제</button>
@@ -242,12 +242,12 @@
                             단위 : <strong><span th:text="${url5select_day_week_month}"></span></strong>,
                             범위 : <strong><span th:text="${url5device}"></span></strong>,
                             성별 : <strong><span th:text="${url5gender}"></span></strong>,
-                            연령: <strong><span th:each="url5age1 : ${url5age1}"><span th:text="${url5age1}"></span>,</span></strong><br>
+                            연령: <strong><span th:each="url5age1, url5age1State : ${url5age1}"><span th:text="${url5age1}"></span><span th:if="${url5age1State.index lt (url5age1State.size)-1}">,</span></span></strong><br>
                             비교군2 기간: <strong><span th:text="${url5year3}"></span>-<span th:text="${url5month3}"></span>-<span th:text="${url5day3}"></span>~<span th:text="${url5year4}"></span>-<span th:text="${url5month4}"></span>-<span th:text="${url5day4}"></span></strong>,
                             단위 : <strong><span th:text="${url5select_day_week_month2}"></span></strong>,
                             범위 : <strong><span th:text="${url5device2}"></span></strong>,
                             성별 : <strong><span th:text="${url5gender2}"></span></strong>,
-                            연령: <strong><span th:each="url5age2 : ${url5age2}"><span th:text="${url5age2}"></span>,</span></strong></p>
+                            연령: <strong><span th:each="url5age2, url5age2State : ${url5age2}"><span th:text="${url5age2}"></span><span th:if="${url5age2State.index lt (url5age2State.size)-1}">,</span></span></strong></p>
                     </button>
                     <form action="/favorite_url" method="post" style="display:inline;">
                         <button class="custom-btn" type="submit" name="removeUrl5" value="5">삭제</button>

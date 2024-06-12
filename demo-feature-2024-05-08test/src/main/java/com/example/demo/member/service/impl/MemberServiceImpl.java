@@ -989,10 +989,11 @@ public class MemberServiceImpl implements MemberService {
         for (int i = 1; i < arr.length; i++) {
             if (i!=arr.length-1){
                 arrayList.add(arr[i]);
-            }else {
+            }else if (!arr3[0].equals("")){
                 arrayList.add(arr3[0]);
             }
         }
+
         return arrayList;
     }
 

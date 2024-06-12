@@ -298,7 +298,7 @@ public class MemberController {
                 arrayList3.add("전체");
             }
 
-            if (favoriteURL!=""){
+            if (!favoriteURL.equals("")){
                 for (int j = 0; j < arrayList2.size(); j++) {
                     if (arrayList2.get(j).equals("1")){
                         arrayList2.set(j,"~12");
@@ -569,8 +569,7 @@ public class MemberController {
             if (arrayList3.size()==0){
                 arrayList3.add("전체");
             }
-
-            if (favoriteURL!=""){
+            if (!favoriteURL.equals("")){
                 for (int j = 0; j < arrayList2.size(); j++) {
                     if (arrayList2.get(j).equals("1")){
                         arrayList2.set(j,"~12");
@@ -1193,7 +1192,6 @@ public class MemberController {
                     model.addAttribute("xAxisData", result1Maps.getPeriodsMap().get(title));
                 }
                 model.addAttribute("seriesData"+i, result1Maps.getRatiosMap().get(title));
-                System.out.println(title);
                 i--;
             }
             int j = result2Maps.getPeriodsMap().size();
