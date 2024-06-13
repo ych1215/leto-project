@@ -22,13 +22,8 @@ public class SecurityConfiguration{
     private final MemberService memberService;
 
     @Bean
-    public PasswordEncoder getPasswordEncoder() {
+    PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    UserAuthenticationFailureHandler getFailureHandler() {
-        return new UserAuthenticationFailureHandler();
     }
 
     @Bean
@@ -63,7 +58,7 @@ public class SecurityConfiguration{
                         .authenticated())
                 .formLogin((formLogin) -> formLogin
                         .loginPage("/login")
-                        .failureHandler(getFailureHandler())
+                        .failureUrl("/login?error=true")
                         .defaultSuccessUrl("/index_login_success")
                         .permitAll())
                 .logout((logout) -> logout

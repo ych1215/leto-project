@@ -367,10 +367,6 @@
                 button.style.position = "static"; // 스크롤이 버튼을 넘지 않으면 버튼 위치를 원래대로 설정
             }
         };
-        function logout() {
-            alert('로그아웃되었습니다.');
-            window.location.href = '/member/logout';
-        }
     </script>
     <script>
         function toggleAllCheckboxes(group, source) {
@@ -426,115 +422,6 @@
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            for (let i = 1; i <= 4; i++) {
-                const yearSelect = document.getElementById(`selectYear${i}`);
-                const monthSelect = document.getElementById(`selectMonth${i}`);
-                const daySelect = document.getElementById(`selectDay${i}`);
-
-                const today = new Date();
-                const currentYear = today.getFullYear();
-                const currentMonth = today.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
-                const currentDate = today.getDate();
-
-                function updateMonths(yearSelect, monthSelect) {
-                    const selectedYear = parseInt(yearSelect.value);
-                    // 기존의 월 옵션을 모두 제거합니다.
-                    monthSelect.innerHTML = '';
-
-                    for (let month = 1; month <= 12; month++) {
-                        // 현재 년도보다 작거나 같은 경우에만 월을 추가합니다.
-                        if (selectedYear < currentYear || (selectedYear === currentYear && month <= currentMonth)) {
-                            const option = document.createElement('option');
-                            option.value = month.toString().padStart(2, '0');
-                            option.textContent = month;
-                            monthSelect.appendChild(option);
-                        }
-                    }
-
-                    // 월 셀렉트 박스를 현재 월로 설정합니다.
-                    monthSelect.value = currentMonth.toString().padStart(2, '0');
-                }
-
-                function updateDays(yearSelect, monthSelect, daySelect, groupNumber) {
-                    const year = parseInt(yearSelect.value);
-                    const month = parseInt(monthSelect.value);
-                    let daysInMonth;
-
-                    const selectedDay = parseInt(daySelect.value);
-
-                    if (month === 2 && ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0)) {
-                        daysInMonth = 29;
-                    } else {
-                        daysInMonth = new Date(year, month, 0).getDate();
-                    }
-
-                    daySelect.innerHTML = '';
-
-                    for (let day = 1; day <= daysInMonth; day++) {
-                        const option = document.createElement('option');
-                        option.value = day.toString().padStart(2, '0');
-                        option.textContent = day;
-
-                        const selectedDate = new Date(year, month - 1, day);
-
-                        if (selectedDate <= today) {
-                            if (groupNumber === 1 || groupNumber === 2 || groupNumber === 3) {
-                                if (day === currentDate && (year === currentYear - 2 || year === currentYear - 1) && month === currentMonth) {
-                                    option.selected = true;
-                                }
-                            } else {
-                                if (day === currentDate && year === currentYear && month === currentMonth) {
-                                    option.selected = true;
-                                }
-                            }
-                            daySelect.appendChild(option);
-                        }
-                    }
-
-                    if (selectedDay && selectedDay <= daysInMonth) {
-                        daySelect.value = selectedDay.toString().padStart(2, '0');
-                    }
-
-                    const selectedDate = new Date(year, month - 1, parseInt(daySelect.value));
-                    if (selectedDate > today) {
-                        alert('미래 날짜는 선택할 수 없습니다.');
-                        yearSelect.value = currentYear.toString();
-                        monthSelect.value = currentMonth.toString().padStart(2, '0');
-                        daySelect.value = currentDate.toString().padStart(2, '0');
-                    }
-                }
-
-                // 연도를 조정합니다. yearSelect1은 -2, yearSelect3은 -1 합니다.
-                if (i === 1) {
-                    yearSelect.value = (currentYear - 2).toString();
-                }
-                else if (i === 2) {
-                    yearSelect.value = (currentYear - 1).toString();
-                }
-                else if (i === 3) {
-                    yearSelect.value = (currentYear - 1).toString();
-                } else {
-                    yearSelect.value = currentYear.toString();
-                }
-
-                // 월 셀렉트 박스를 업데이트합니다.
-                updateMonths(yearSelect, monthSelect);
-
-                // 일 셀렉트 박스를 업데이트합니다.
-                updateDays(yearSelect, monthSelect, daySelect, i);
-
-                // 셀렉트 박스 값 변경 시 업데이트합니다.
-                yearSelect.addEventListener('change', () => {
-                    updateMonths(yearSelect, monthSelect);
-                    updateDays(yearSelect, monthSelect, daySelect, i);
-                });
-                monthSelect.addEventListener('change', () => updateDays(yearSelect, monthSelect, daySelect, i));
-                daySelect.addEventListener('change', () => updateDays(yearSelect, monthSelect, daySelect, i));
-            }
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
             const selectDayType1 = document.getElementById('selectDayType');
             const selectDayType2 = document.getElementById('selectDayType2');
 
@@ -551,6 +438,7 @@
             });
         });
     </script>
+
 
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.css" />
@@ -661,70 +549,95 @@
                     // 초기 입력란 상태 확인하여 버튼 상태 설정
                     checkInputs();
                 </script>
+                <script>
+                    document.getElementById('myForm').addEventListener('submit', function(event) {
+                        var startDate1 = new Date(document.getElementById('startDate1').value);
+                        var endDate1 = new Date(document.getElementById('endDate1').value);
+                        var startDate2 = new Date(document.getElementById('startDate2').value);
+                        var endDate2 = new Date(document.getElementById('endDate2').value);
+                        let today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        var tomorrow = new Date(today.setDate(today.getDate()+1));
+
+                        if ((endDate1 < startDate1 || endDate2 < startDate2)&&(startDate1 > today || startDate2 > today || endDate1 > today || endDate2 > today)){
+                            event.preventDefault();
+                            alert("종료 날짜가 시작 날짜보다 과거일 수 없고 선택 날짜가 현재 날짜 보다 미래일 수 없습니다.");
+                        } else if (endDate1 < startDate1 || endDate2 < startDate2) {
+                            event.preventDefault();
+                            alert("종료 날짜가 시작 날짜보다 과거일 수 없습니다.");
+                        } else if (startDate1 > tomorrow || startDate2 > tomorrow || endDate1 > tomorrow || endDate2 > tomorrow) {
+                            event.preventDefault();
+                            alert("선택 날짜가 현재 날짜 보다 미래일 수 없습니다.");
+                        }
+                    });
+                </script>
+                <script>
+                    function getCurrentDate() {
+                        const today = new Date();
+                        const year = today.getFullYear();
+                        const month = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+                        const day = String(today.getDate()).padStart(2, '0');
+                        return `${year}-${month}-${day}`;
+                    }
+
+                    // <input type="hidden" id="hidden1" placeholder="검색어2" name="query2"/>
+                    // <input type="hidden" id="hidden2" placeholder="검색어3" name="query3"/>
+                    // <input type="hidden" id="hidden3" placeholder="검색어4" name="query4"/>
+                    // <input type="hidden" id="hidden4" placeholder="검색어5" name="query5"/>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const searchTerm1 = urlParams.get('query1');
+                        const searchTerm2 = urlParams.get('query2');
+                        const searchTerm3 = urlParams.get('query3');
+                        const searchTerm4 = urlParams.get('query4');
+                        const searchTerm5 = urlParams.get('query5');
+
+                        const searchInput1 = document.getElementById('query1');
+                        const searchInput2 = document.getElementById('hidden1');
+                        const searchInput3 = document.getElementById('hidden2');
+                        const searchInput4 = document.getElementById('hidden3');
+                        const searchInput5 = document.getElementById('hidden4');
+
+                        if (searchTerm1) {
+                            searchInput1.value = searchTerm1;
+                        }
+                        if (searchTerm2) {
+                            searchInput2.value = searchTerm2;
+                            searchInput2.type = "text";
+                        }
+                        if (searchTerm3) {
+                            searchInput3.value = searchTerm3;
+                            searchInput3.type = "text";
+                        }
+                        if (searchTerm4) {
+                            searchInput4.value = searchTerm4;
+                            searchInput4.type = "text";
+                        }
+                        if (searchTerm5) {
+                            searchInput5.value = searchTerm5;
+                            searchInput5.type = "text";
+                        }
+                    });
+
+                    // 페이지 로드 시 기본값 설정
+                    document.addEventListener('DOMContentLoaded', (event) => {
+                        const startDateInput1 = document.getElementById('startDate1');
+                        const endDateInput1 = document.getElementById('endDate1');
+                        const startDateInput2 = document.getElementById('startDate2');
+                        const endDateInput2 = document.getElementById('endDate2');
+                        endDateInput1.value = getCurrentDate();
+                        startDateInput1.value = getCurrentDate();
+                        endDateInput2.value = getCurrentDate();
+                        startDateInput2.value = getCurrentDate();
+                    });
+                </script>
             </div>
             <div class="item2">
                 <br>
                 <strong>비교군1 : </strong>
                 <strong class="title">기간</strong>
-                <label for="selectYear1"></label><select name="year" id="selectYear1">
-                <option value="2016">2016</option>
-                <option value="2017">2017</option>
-                <option value="2018">2018</option>
-                <option value="2019">2019</option>
-                <option value="2020">2020</option>
-                <option value="2021">2021</option>
-                <option value="2022">2022</option>
-                <option value="2023">2023</option>
-                <option value="2024">2024</option>
-            </select>
-                <label for="selectMonth1"></label><select name="month" id="selectMonth1">
-                <option value="01">01</option>
-                <option value="02">02</option>
-                <option value="03">03</option>
-                <option value="04">04</option>
-                <option value="05">05</option>
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-            </select>
-                <label for="selectDay1"></label>
-                <select name="day" id="selectDay1">
-                    <!-- 일 옵션은 JavaScript로 동적으로 채워집니다 -->
-                </select>
-                <small> 에서</small>
-                <label for="selectYear2"></label><select name="year2" id="selectYear2">
-                <option value="2016">2016</option>
-                <option value="2017">2017</option>
-                <option value="2018">2018</option>
-                <option value="2019">2019</option>
-                <option value="2020">2020</option>
-                <option value="2021">2021</option>
-                <option value="2022">2022</option>
-                <option value="2023">2023</option>
-                <option value="2024">2024</option>
-            </select>
-                <label for="selectMonth2"></label><select name="month2" id="selectMonth2">
-                <option value="01">01</option>
-                <option value="02">02</option>
-                <option value="03">03</option>
-                <option value="04">04</option>
-                <option value="05">05</option>
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-            </select>
-                <label for="selectDay2"></label>
-                <select name="day2" id="selectDay2">
-                    <!-- 일 옵션은 JavaScript로 동적으로 채워집니다 -->
-                </select><small> 까지</small>
+                <input type="date" id="startDate1" name="date1" required>~
+                <input type="date" id="endDate1" name="date2" required>
                 <a>&nbsp</a><a>&nbsp</a><a>&nbsp</a><a>&nbsp</a>
                 <strong class="title">단위</strong>
                 <label for="selectDayType"></label><select name="select_day_week_month" id="selectDayType">
@@ -805,63 +718,9 @@
                 <hr class="hr-1">
                 <strong>비교군2 : </strong>
                 <strong class="title">기간</strong>
-                <label for="selectYear1"></label><select name="year3" id="selectYear3">
-                <option value="2016">2016</option>
-                <option value="2017">2017</option>
-                <option value="2018">2018</option>
-                <option value="2019">2019</option>
-                <option value="2020">2020</option>
-                <option value="2021">2021</option>
-                <option value="2022">2022</option>
-                <option value="2023">2023</option>
-                <option value="2024">2024</option>
-            </select>
-                <label for="selectMonth1"></label><select name="month3" id="selectMonth3">
-                <option value="01">01</option>
-                <option value="02">02</option>
-                <option value="03">03</option>
-                <option value="04">04</option>
-                <option value="05">05</option>
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-            </select>
-                <label for="selectDay1"></label><select name="day3" id="selectDay3">
-                <!-- 일 옵션은 JavaScript로 동적으로 채워집니다 -->
-            </select><small> 에서</small>
-                <label for="selectYear2"></label><select name="year4" id="selectYear4">
-                <option value="2016">2016</option>
-                <option value="2017">2017</option>
-                <option value="2018">2018</option>
-                <option value="2019">2019</option>
-                <option value="2020">2020</option>
-                <option value="2021">2021</option>
-                <option value="2022">2022</option>
-                <option value="2023">2023</option>
-                <option value="2024">2024</option>
-            </select>
-                <label for="selectMonth2"></label><select name="month4" id="selectMonth4">
-                <option selected>월</option>
-                <option value="01">01</option>
-                <option value="02">02</option>
-                <option value="03">03</option>
-                <option value="04">04</option>
-                <option value="05">05</option>
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-            </select>
-                <label for="selectDay2"></label><select name="day4" id="selectDay4">
-                <!-- 일 옵션은 JavaScript로 동적으로 채워집니다 -->
-            </select><small> 까지</small>
+                <input type="date" id="startDate2" name="date3" required>~
+                <input type="date" id="endDate2" name="date4" required>
+                <a>&nbsp</a><a>&nbsp</a><a>&nbsp</a><a>&nbsp</a>
                 <a>&nbsp</a><a>&nbsp</a><a>&nbsp</a><a>&nbsp</a>
                 <strong class="title">단위</strong>
                 <label for="selectDayType"></label><select name="select_day_week_month2" id="selectDayType2">

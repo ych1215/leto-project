@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <!-- Basic -->
@@ -59,7 +59,6 @@
                     LOG<span>IN</span>
                 </h1>
                 <br>
-                <div th:text="${errorMessage}"></div>
                 <form method="post">
                     <div class="input-container">
                         <div class="input-group">
@@ -70,6 +69,7 @@
                             <i class="fas fa-lock"></i>
                             <input type="password" name="password" placeholder="비밀번호 입력" required>
                         </div>
+                        <p th:if="${param.error}" style="color: orangered;">로그인에 실패 했습니다.</p>
                         <div class="button-container">
                             <button type="submit">로그인</button>
                         </div>

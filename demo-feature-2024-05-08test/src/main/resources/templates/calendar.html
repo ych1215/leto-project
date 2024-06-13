@@ -335,7 +335,6 @@
             }
         });
     </script>
-
 </head>
 
 <body class="sub_page">
@@ -426,70 +425,49 @@
                     // 초기 입력란 상태 확인하여 버튼 상태 설정
                     checkInputs();
                 </script>
+                <script>
+                    document.getElementById('myForm').addEventListener('submit', function(event) {
+                        var startDate = new Date(document.getElementById('startDate').value);
+                        var endDate = new Date(document.getElementById('endDate').value);
+                        let today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        var tomorrow = new Date(today.setDate(today.getDate()+1));
+
+                        if ((endDate < startDate)&&(startDate > today || endDate > today)){
+                            event.preventDefault();
+                            alert("종료 날짜가 시작 날짜보다 과거일 수 없고 선택 날짜가 현재 날짜 보다 미래일 수 없습니다.");
+                        } else if (endDate < startDate) {
+                            event.preventDefault();
+                            alert("종료 날짜가 시작 날짜보다 과거일 수 없습니다.");
+                        } else if (startDate > tomorrow || endDate > tomorrow) {
+                            event.preventDefault();
+                            alert("선택 날짜가 현재 날짜 보다 미래일 수 없습니다.");
+                        }
+                    });
+                </script>
+                <script>
+                    function getCurrentDate() {
+                        const today = new Date();
+                        const year = today.getFullYear();
+                        const month = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+                        const day = String(today.getDate()).padStart(2, '0');
+                        return `${year}-${month}-${day}`;
+                    }
+
+                    // 페이지 로드 시 기본값 설정
+                    document.addEventListener('DOMContentLoaded', (event) => {
+                        const startDateInput = document.getElementById('startDate');
+                        const endDateInput = document.getElementById('endDate');
+                        endDateInput.value = getCurrentDate();
+                        startDateInput.value = getCurrentDate();
+                    });
+                </script>
             </div>
             <div class="item2">
                 <br>
-                <strong>비교군1 : </strong>
                 <strong class="title">기간</strong>
-                <label for="selectYear1"></label><select name="year" id="selectYear1">
-                <option value="2016">2016</option>
-                <option value="2017">2017</option>
-                <option value="2018">2018</option>
-                <option value="2019">2019</option>
-                <option value="2020">2020</option>
-                <option value="2021">2021</option>
-                <option value="2022">2022</option>
-                <option value="2023">2023</option>
-                <option value="2024">2024</option>
-            </select>
-                <label for="selectMonth1"></label><select name="month" id="selectMonth1">
-                <option value="01">01</option>
-                <option value="02">02</option>
-                <option value="03">03</option>
-                <option value="04">04</option>
-                <option value="05">05</option>
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-            </select>
-                <label for="selectDay1"></label>
-                <select name="day" id="selectDay1">
-                    <!-- 일 옵션은 JavaScript로 동적으로 채워집니다 -->
-                </select>
-                <small> 에서</small>
-                <label for="selectYear2"></label><select name="year2" id="selectYear2">
-                <option value="2016">2016</option>
-                <option value="2017">2017</option>
-                <option value="2018">2018</option>
-                <option value="2019">2019</option>
-                <option value="2020">2020</option>
-                <option value="2021">2021</option>
-                <option value="2022">2022</option>
-                <option value="2023">2023</option>
-                <option value="2024">2024</option>
-            </select>
-                <label for="selectMonth2"></label><select name="month2" id="selectMonth2">
-                <option value="01">01</option>
-                <option value="02">02</option>
-                <option value="03">03</option>
-                <option value="04">04</option>
-                <option value="05">05</option>
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-            </select>
-                <label for="selectDay2"></label>
-                <select name="day2" id="selectDay2">
-                    <!-- 일 옵션은 JavaScript로 동적으로 채워집니다 -->
-                </select><small> 까지</small>
+                <input type="date" id="startDate" name="date1" value="defaultDate()">~
+                <input type="date" id="endDate" name="date2">
                 <a>&nbsp</a><a>&nbsp</a><a>&nbsp</a><a>&nbsp</a>
                 <strong class="title">단위</strong>
                 <label for="selectDayType"></label><select name="select_day_week_month" id="selectDayType">
